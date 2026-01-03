@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>User &amp; Settings Management</title>
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Config -->
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#137fec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+</head>
+
+<body
+  class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-hidden">
+  <div class="flex h-screen w-full">
+    <!-- Side Navigation -->
+    <aside
+      class="w-64 flex-shrink-0 flex flex-col bg-white dark:bg-[#15202b] border-r border-slate-200 dark:border-slate-800 transition-all duration-300">
+      <div class="p-6">
+        <div class="flex items-center gap-3">
+          <div class="size-8 rounded bg-primary flex items-center justify-center text-white">
+            <span class="material-symbols-outlined">storefront</span>
+          </div>
+          <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Retail Manager</h1>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+        <div class="pb-2">
+          <p class="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Main
+            Menu</p>
+          <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+            href="#">
+            <span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+            <span class="text-sm font-medium">Dashboard</span>
+          </a>
+          <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+            href="#">
+            <span class="material-symbols-outlined group-hover:text-primary">inventory_2</span>
+            <span class="text-sm font-medium">Inventory</span>
+          </a>
+          <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+            href="#">
+            <span class="material-symbols-outlined group-hover:text-primary">shopping_cart</span>
+            <span class="text-sm font-medium">Orders</span>
+          </a>
+        </div>
+        <div class="pb-2">
+          <p class="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Admin
+          </p>
+          <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary dark:text-primary" href="#">
+            <span class="material-symbols-outlined text-primary fill-1">settings</span>
+            <span class="text-sm font-medium">Users &amp; Settings</span>
+          </a>
+          <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+            href="#">
+            <span class="material-symbols-outlined group-hover:text-primary">bar_chart</span>
+            <span class="text-sm font-medium">Reports</span>
+          </a>
+        </div>
+      </nav>
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center"
+            data-alt="User profile avatar gradient"
+            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpR2GJFnSzDui0LkXfu-Jl5ilHVz1qLLTaqASiM58wTZ9URuKOV080MSozWM0pUiZKMt_nE1KI0_hASsKNreqG6Os_PUEaEcf931aF23LEIz3y9pAk6rJH0xsjtpZQXpGvogjzcMf6zXDAO92xl_UK4wiV-QmpsoIrKe3-FYO8u-f0rVpxH5TmDkgtUYmsJ9OskvQzbIJtj_i1o3mY5qX4_-pUz2iuRhWERn6m8M6wkNYcmixAuwDQbq3PZuI48Qm48njkIJamnX8");'>
+          </div>
+          <div class="flex flex-col">
+            <p class="text-sm font-medium text-slate-900 dark:text-white">Jane Admin</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Super Admin</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+      <!-- Top Header -->
+      <header
+        class="h-16 flex items-center justify-between px-8 bg-white dark:bg-[#15202b] border-b border-slate-200 dark:border-slate-800 shrink-0">
+        <!-- Search -->
+        <div class="flex items-center max-w-md w-full bg-slate-100 dark:bg-slate-800 rounded-lg px-3 py-2">
+          <span class="material-symbols-outlined text-slate-400">search</span>
+          <input
+            class="bg-transparent border-none text-sm w-full focus:ring-0 text-slate-900 dark:text-white placeholder-slate-400 ml-2"
+            placeholder="Search anything..." type="text" />
+        </div>
+        <!-- Right Actions -->
+        <div class="flex items-center gap-4">
+          <button
+            class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full relative">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
+          </button>
+          <button
+            class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+            <span class="material-symbols-outlined">help</span>
+          </button>
+        </div>
+      </header>
+      <!-- Scrollable Content -->
+      <main class="flex-1 overflow-y-auto p-8 scroll-smooth">
+        <div class="max-w-6xl mx-auto space-y-8">
+          <!-- Breadcrumbs -->
+          <nav class="flex items-center text-sm text-slate-500 dark:text-slate-400">
+            <a class="hover:text-primary transition-colors" href="#">Home</a>
+            <span class="mx-2">/</span>
+            <a class="hover:text-primary transition-colors" href="#">Admin</a>
+            <span class="mx-2">/</span>
+            <span class="text-slate-900 dark:text-white font-medium">System Administration</span>
+          </nav>
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">System Administration</h2>
+              <p class="text-slate-500 dark:text-slate-400 mt-1">Manage team access and global store configurations.</p>
+            </div>
+          </div>
+          <!-- Navigation Tabs -->
+          <div class="border-b border-slate-200 dark:border-slate-800">
+            <div class="flex space-x-8">
+              <button class="border-b-2 border-primary pb-4 px-1 text-sm font-semibold text-primary">
+                User Management
+              </button>
+              <button
+                class="border-b-2 border-transparent pb-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors">
+                Store Settings
+              </button>
+            </div>
+          </div>
+          <!-- USER MANAGEMENT SECTION (Active) -->
+          <div
+            class="bg-white dark:bg-[#1e2936] rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <!-- Toolbar -->
+            <div
+              class="p-5 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div class="relative w-full sm:w-72">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">search</span>
+                <input
+                  class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  placeholder="Search users..." type="text" />
+              </div>
+              <div class="flex gap-3 w-full sm:w-auto">
+                <button
+                  class="flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto">
+                  <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                  Filter
+                </button>
+                <button
+                  class="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm shadow-blue-200 dark:shadow-none w-full sm:w-auto">
+                  <span class="material-symbols-outlined text-[20px]">add</span>
+                  Add New User
+                </button>
+              </div>
+            </div>
+            <!-- Data Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                    <th
+                      class="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      User</th>
+                    <th
+                      class="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Role</th>
+                    <th
+                      class="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Status</th>
+                    <th
+                      class="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Last Active</th>
+                    <th
+                      class="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">
+                      Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  <!-- Row 1 -->
+                  <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="size-9 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm font-bold">
+                          AS</div>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900 dark:text-white">Alice Smith</p>
+                          <p class="text-xs text-slate-500 dark:text-slate-400">alice.smith@store.com</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                        Store Manager
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-green-500"></span>
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Active</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                      2 mins ago
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                      </button>
+                      <button class="text-slate-400 hover:text-red-500 transition-colors p-1 ml-2">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Row 2 -->
+                  <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="size-9 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-sm font-bold">
+                          BJ</div>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900 dark:text-white">Bob Jones</p>
+                          <p class="text-xs text-slate-500 dark:text-slate-400">bob.jones@store.com</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                        Cashier
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-green-500"></span>
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Active</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                      1 hour ago
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                      </button>
+                      <button class="text-slate-400 hover:text-red-500 transition-colors p-1 ml-2">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Row 3 -->
+                  <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="size-9 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold">
+                          JD</div>
+                        <div>
+                          <p class="text-sm font-medium text-slate-900 dark:text-white">John Doe</p>
+                          <p class="text-xs text-slate-500 dark:text-slate-400">john.doe@store.com</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                        Inventory Specialist
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Inactive</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                      2 days ago
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                      <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                      </button>
+                      <button class="text-slate-400 hover:text-red-500 transition-colors p-1 ml-2">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <p class="text-sm text-slate-500 dark:text-slate-400">Showing <span
+                  class="font-medium text-slate-900 dark:text-white">1</span> to <span
+                  class="font-medium text-slate-900 dark:text-white">3</span> of <span
+                  class="font-medium text-slate-900 dark:text-white">12</span> users</p>
+              <div class="flex gap-2">
+                <button
+                  class="px-3 py-1 border border-slate-200 dark:border-slate-700 rounded text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50">Previous</button>
+                <button
+                  class="px-3 py-1 border border-slate-200 dark:border-slate-700 rounded text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Next</button>
+              </div>
+            </div>
+          </div>
+          <!-- STORE SETTINGS SECTION (Visual Demo) -->
+          <!-- In a real app, this would be hidden until the tab is clicked, but we show it here to demonstrate the full design capability requested. -->
+          <div class="mt-12 pt-12 border-t border-dashed border-slate-300 dark:border-slate-700 relative">
+            <span
+              class="absolute -top-3 left-1/2 -translate-x-1/2 bg-background-light dark:bg-background-dark px-4 text-xs font-semibold text-slate-400 uppercase tracking-widest">Settings
+              View Preview</span>
+            <div
+              class="bg-white dark:bg-[#1e2936] rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">General Configuration</h3>
+                <button
+                  class="px-5 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">Save
+                  Changes</button>
+              </div>
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Col 1: Identity -->
+                <div class="lg:col-span-2 space-y-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Shop Name</label>
+                      <input
+                        class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                        type="text" value="My Retail Store" />
+                    </div>
+                    <div class="space-y-2">
+                      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Support Email</label>
+                      <input
+                        class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                        type="email" value="support@mystore.com" />
+                    </div>
+                    <div class="space-y-2">
+                      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Currency</label>
+                      <div class="relative">
+                        <select
+                          class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+                          <option selected="">USD ($)</option>
+                          <option>EUR (€)</option>
+                          <option>GBP (£)</option>
+                        </select>
+                        <span
+                          class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 pointer-events-none text-[20px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div class="space-y-2">
+                      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Timezone</label>
+                      <div class="relative">
+                        <select
+                          class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+                          <option selected="">(GMT-05:00) Eastern Time</option>
+                          <option>(GMT-08:00) Pacific Time</option>
+                          <option>(GMT+00:00) UTC</option>
+                        </select>
+                        <span
+                          class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 pointer-events-none text-[20px]">expand_more</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
+                    <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Payment Methods</h4>
+                    <div class="space-y-3">
+                      <label
+                        class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 transition-colors">
+                        <div class="flex items-center gap-3">
+                          <div class="p-2 bg-white dark:bg-slate-700 rounded text-green-600">
+                            <span class="material-symbols-outlined">payments</span>
+                          </div>
+                          <div>
+                            <p class="text-sm font-medium text-slate-900 dark:text-white">Cash Drawer</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Accept physical cash payments</p>
+                          </div>
+                        </div>
+                        <input checked="" class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+                          type="checkbox" />
+                      </label>
+                      <label
+                        class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 transition-colors">
+                        <div class="flex items-center gap-3">
+                          <div class="p-2 bg-white dark:bg-slate-700 rounded text-blue-600">
+                            <span class="material-symbols-outlined">credit_card</span>
+                          </div>
+                          <div>
+                            <p class="text-sm font-medium text-slate-900 dark:text-white">Credit Card Terminal</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Integrated Stripe payments</p>
+                          </div>
+                        </div>
+                        <input checked="" class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+                          type="checkbox" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <!-- Col 2: Branding -->
+                <div class="lg:col-span-1">
+                  <div
+                    class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 border border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Shop Logo</h4>
+                    <div
+                      class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+                      <div
+                        class="size-20 mb-3 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm">
+                        <img alt="Current shop logo" class="rounded-full"
+                          data-alt="Abstract colorful shop logo placeholder"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuA466g4O6X3byPtbPlfd0ZPJmPcEkYKDXCHdzso1kl6qxYAbHGo0qyCozoGVgh5ApzlwGUjYXDIcBqUs6MuaoV91P-fWFJNw_EisJCc6H4-N9yICk0ZjwotE-LwcJ0CMctIWo6qJyEbTS8v3eN1h3mz22B4ZquuFRO5UX_Calp5oRavDX5n-UsOo7pmv9_0__POI2x6yGOL5sUw_WSgP9SsUS5PaczNylsX4cmBQru0q3auekanwdYrbdGiXFeYWgPjURTkzBcogUw" />
+                      </div>
+                      <p class="text-sm font-medium text-primary group-hover:underline">Click to upload</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 text-center">SVG, PNG, JPG (Max 2MB)</p>
+                    </div>
+                    <div class="mt-6">
+                      <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-2">Theme Preference</h4>
+                      <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                          <input checked="" class="text-primary focus:ring-primary" name="theme" type="radio" />
+                          <span class="text-sm text-slate-600 dark:text-slate-300">Light</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                          <input class="text-primary focus:ring-primary" name="theme" type="radio" />
+                          <span class="text-sm text-slate-600 dark:text-slate-300">Dark</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Products Module - Retail Manager</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2632",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+    <div class="flex h-screen w-full flex-col overflow-hidden">
+        <!-- TopNavBar -->
+        <header
+            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-surface-light dark:bg-surface-dark px-6 py-3 shrink-0 z-20">
+            <div class="flex items-center gap-4">
+                <div class="size-8 text-primary">
+                    <svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_6_330)">
+                            <path clip-rule="evenodd"
+                                d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z"
+                                fill="currentColor" fill-rule="evenodd"></path>
+                        </g>
+                        <defs>
+                            <clippath id="clip0_6_330">
+                                <rect height="48" width="48"></rect>
+                            </clippath>
+                        </defs>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] dark:text-white">Retail Manager</h2>
+            </div>
+            <div class="flex items-center gap-6">
+                <button
+                    class="relative text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-0 right-0 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Alex Morgan</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Store Manager</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-slate-100 dark:ring-slate-700"
+                        data-alt="Profile picture of a user smiling"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuClyUXbyyPXUQi4F515ohS917PQAu_2jMHKaAuzr3NI03hjnY5HeVRMs-kJzTgazC7fHLwL1WUrNTf2wB1UrdND_S77VOfezn4YZpZijnrbjgb8abCNgvFXfRkrKQOs8_GxgQhRR0eES_40hQCQ1b9Gc5E5I3aYP5eYKmCmeCCpZrSOFflbxnalBbG4LDfEVPxbAjSrvACsSeY49SJ3H19_cXdFUh0YKTlTbw1M99onnEvBvcpcdqDveolTcwLkF6v7VgjpOC2FsAM");'>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex flex-1 overflow-hidden">
+            <!-- SideNavBar -->
+            <aside
+                class="w-64 flex-col bg-surface-light dark:bg-surface-dark border-r border-slate-200 dark:border-slate-800 hidden md:flex shrink-0">
+                <div class="flex flex-col gap-2 p-4">
+                    <div class="px-3 py-4 mb-2">
+                        <h1 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Main
+                            Menu</h1>
+                    </div>
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors group"
+                        href="#">
+                        <span
+                            class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">dashboard</span>
+                        <p class="text-sm font-medium">Dashboard</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-primary group"
+                        href="#">
+                        <span class="material-symbols-outlined">inventory_2</span>
+                        <p class="text-sm font-bold">Products</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors group"
+                        href="#">
+                        <span
+                            class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">shopping_cart</span>
+                        <p class="text-sm font-medium">Orders</p>
+                        <span
+                            class="ml-auto bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors group"
+                        href="#">
+                        <span
+                            class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">group</span>
+                        <p class="text-sm font-medium">Customers</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors group"
+                        href="#">
+                        <span
+                            class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">bar_chart</span>
+                        <p class="text-sm font-medium">Reports</p>
+                    </a>
+                </div>
+                <div class="mt-auto p-4 border-t border-slate-200 dark:border-slate-800">
+                    <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors group"
+                        href="#">
+                        <span
+                            class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">settings</span>
+                        <p class="text-sm font-medium">Settings</p>
+                    </a>
+                </div>
+            </aside>
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+                <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+                    <!-- Page Heading -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Products</h1>
+                            <p class="text-slate-500 dark:text-slate-400">Manage your inventory, variants, and stock
+                                levels.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                <span class="material-symbols-outlined text-[20px] mr-2">file_upload</span>
+                                Export
+                            </button>
+                            <button
+                                class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-sm hover:bg-blue-600 transition-colors">
+                                <span class="material-symbols-outlined text-[20px] mr-2">add</span>
+                                Add Product
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-1">
+                            <div class="flex justify-between items-start">
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Products</p>
+                                <span
+                                    class="material-symbols-outlined text-primary bg-primary/10 p-1.5 rounded-lg text-[20px]">inventory_2</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mt-2">
+                                <p class="text-2xl font-bold text-slate-900 dark:text-white">1,240</p>
+                                <span
+                                    class="text-green-600 text-xs font-bold bg-green-100 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded">+5%</span>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-1">
+                            <div class="flex justify-between items-start">
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Low Stock Variants</p>
+                                <span
+                                    class="material-symbols-outlined text-orange-500 bg-orange-100 dark:bg-orange-900/20 p-1.5 rounded-lg text-[20px]">warning</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mt-2">
+                                <p class="text-2xl font-bold text-slate-900 dark:text-white">15</p>
+                                <span
+                                    class="text-orange-600 text-xs font-bold bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400 px-1.5 py-0.5 rounded">Action
+                                    needed</span>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-1">
+                            <div class="flex justify-between items-start">
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Out of Stock</p>
+                                <span
+                                    class="material-symbols-outlined text-red-500 bg-red-100 dark:bg-red-900/20 p-1.5 rounded-lg text-[20px]">remove_shopping_cart</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mt-2">
+                                <p class="text-2xl font-bold text-slate-900 dark:text-white">3</p>
+                                <span class="text-slate-500 text-xs font-normal">Restocking soon</span>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-1">
+                            <div class="flex justify-between items-start">
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Inventory Value</p>
+                                <span
+                                    class="material-symbols-outlined text-green-600 bg-green-100 dark:bg-green-900/20 p-1.5 rounded-lg text-[20px]">attach_money</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mt-2">
+                                <p class="text-2xl font-bold text-slate-900 dark:text-white">$45,200</p>
+                                <span
+                                    class="text-green-600 text-xs font-bold bg-green-100 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded">+12%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search and Filter Toolbar -->
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="relative w-full md:w-96 group">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 group-focus-within:text-primary transition-colors">
+                                <span class="material-symbols-outlined">search</span>
+                            </span>
+                            <input
+                                class="w-full h-10 pl-10 pr-4 rounded-lg bg-slate-50 dark:bg-slate-800 border-transparent focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-0 text-sm transition-all"
+                                placeholder="Search by name, SKU, or category..." type="text" />
+                        </div>
+                        <div class="flex w-full md:w-auto gap-3 overflow-x-auto pb-1 md:pb-0">
+                            <div class="relative">
+                                <select
+                                    class="h-10 pl-3 pr-8 rounded-lg bg-slate-50 dark:bg-slate-800 border-transparent focus:border-primary focus:ring-0 text-sm text-slate-700 dark:text-slate-300 font-medium appearance-none cursor-pointer min-w-[140px]">
+                                    <option>All Categories</option>
+                                    <option>Apparel</option>
+                                    <option>Accessories</option>
+                                    <option>Footwear</option>
+                                </select>
+                                <span
+                                    class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-slate-500">
+                                    <span class="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+                                </span>
+                            </div>
+                            <div class="relative">
+                                <select
+                                    class="h-10 pl-3 pr-8 rounded-lg bg-slate-50 dark:bg-slate-800 border-transparent focus:border-primary focus:ring-0 text-sm text-slate-700 dark:text-slate-300 font-medium appearance-none cursor-pointer min-w-[140px]">
+                                    <option>Stock Status</option>
+                                    <option>In Stock</option>
+                                    <option class="text-orange-600">Low Stock</option>
+                                    <option class="text-red-600">Out of Stock</option>
+                                </select>
+                                <span
+                                    class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-slate-500">
+                                    <span class="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+                                </span>
+                            </div>
+                            <button
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-transparent">
+                                <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Products Table -->
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                                <thead
+                                    class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase font-semibold text-slate-500 dark:text-slate-400">
+                                    <tr>
+                                        <th class="px-6 py-4 w-12">
+                                            <input
+                                                class="rounded border-slate-300 text-primary focus:ring-primary bg-transparent"
+                                                type="checkbox" />
+                                        </th>
+                                        <th class="px-6 py-4">Product</th>
+                                        <th class="px-6 py-4">SKU</th>
+                                        <th class="px-6 py-4">Stock</th>
+                                        <th class="px-6 py-4">Price</th>
+                                        <th class="px-6 py-4">Status</th>
+                                        <th class="px-6 py-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                    <!-- Row 1: Normal Product -->
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                        <td class="px-6 py-4">
+                                            <input
+                                                class="rounded border-slate-300 text-primary focus:ring-primary bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                                                type="checkbox" />
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-4">
+                                                <button class="text-slate-400 hover:text-primary transition-colors">
+                                                    <span class="material-symbols-outlined">keyboard_arrow_right</span>
+                                                </button>
+                                                <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-700 bg-cover bg-center shrink-0 border border-slate-200 dark:border-slate-600"
+                                                    data-alt="White minimalist sneakers on a gray background"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXcsfE5ii5PkgUQP4ScLJY7UI7eXn9FdVchO0QY2tE3IIOnUSUt1iY938-jPdSPUvg2n_IkTmcD4nP1n9Enww5yA3sNx-nc929KMKZu8ZrR5-VFXKmNiJveMBGoXzmACU3HmUEW6RSSRmaYA1_2110eF28qYBeSJ5Gsg2AljoHSbHTbEwk5VFGiyQS-Vme3GMI7N_WNn4ydmjq0GiJtgk64QHKqOZTK3WRtzhJyKB4qibpoE0boGG-jlVhsa4CLDOh_d8k-1SJvpg");'>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-900 dark:text-white">Urban Runner
+                                                        Sneakers</p>
+                                                    <p class="text-xs text-slate-500">Footwear</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-mono text-xs">URS-2024-001</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-16 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-green-500 w-[80%]"></div>
+                                                </div>
+                                                <span class="text-slate-900 dark:text-white font-medium">124</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">$89.00</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                                <span
+                                                    class="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                                                Active
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                            <button class="text-slate-400 hover:text-red-500 transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2: Expanded Product (Simulated) -->
+                                    <tr class="bg-slate-50 dark:bg-slate-800/30">
+                                        <td class="px-6 py-4 border-l-4 border-primary">
+                                            <input
+                                                class="rounded border-slate-300 text-primary focus:ring-primary bg-transparent"
+                                                type="checkbox" />
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-4">
+                                                <button class="text-primary transition-colors transform rotate-90">
+                                                    <span class="material-symbols-outlined">keyboard_arrow_right</span>
+                                                </button>
+                                                <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-700 bg-cover bg-center shrink-0 border border-slate-200 dark:border-slate-600"
+                                                    data-alt="Classic denim jacket folded"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4dzfrYrZBriK683avYioojoWdFOKFiuGskyr6xqgkuDqJtLUePJGjFbfUGt52AYBc95giOnyMUAqgQr_jUxTnnifcT0WQYlcb3HZToHduphKwjHJTPdf6E1Jz5yd2vxuz_yZaqsdEcQyT3zjvamYUsK9FAmZY5vlDXGNqC-mv9DTaP6Ey7WNW5SWWLoR80EuHWWedqbxsYsmOn-BOKnnqfZCiw_z_zKjvqsWzHm-wbaQ9cmxngGip0-aLKjyQU_NTS6ApCPoY_Xg");'>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-900 dark:text-white">Vintage Denim
+                                                        Jacket</p>
+                                                    <p class="text-xs text-slate-500">Outerwear</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-mono text-xs">VDJ-2023-X</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-16 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-orange-500 w-[25%]"></div>
+                                                </div>
+                                                <span class="text-slate-900 dark:text-white font-medium">18</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">$129.50</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                                <span
+                                                    class="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                                                Active
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                            <button class="text-slate-400 hover:text-red-500 transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Expanded Details (Variant Table) -->
+                                    <tr class="bg-slate-50 dark:bg-slate-800/30">
+                                        <td class="px-6 pb-6 pt-0" colspan="7">
+                                            <div
+                                                class="ml-14 bg-white dark:bg-surface-dark rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                                                <table class="w-full text-sm">
+                                                    <thead
+                                                        class="bg-slate-100 dark:bg-slate-800 text-xs text-slate-500 uppercase">
+                                                        <tr>
+                                                            <th class="px-4 py-2 font-medium">Variant</th>
+                                                            <th class="px-4 py-2 font-medium">SKU</th>
+                                                            <th class="px-4 py-2 font-medium">Stock Level</th>
+                                                            <th class="px-4 py-2 font-medium text-right">Alerts</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                                        <tr>
+                                                            <td class="px-4 py-3">
+                                                                <div class="flex items-center gap-2">
+                                                                    <div
+                                                                        class="h-6 w-6 rounded bg-blue-100 dark:bg-blue-900 border border-blue-200 dark:border-blue-800">
+                                                                    </div>
+                                                                    <span
+                                                                        class="text-slate-700 dark:text-slate-300">Light
+                                                                        Blue / M</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="px-4 py-3 font-mono text-xs text-slate-500">
+                                                                VDJ-LB-M</td>
+                                                            <td
+                                                                class="px-4 py-3 text-slate-900 dark:text-white font-medium">
+                                                                12</td>
+                                                            <td class="px-4 py-3 text-right">
+                                                                <span class="text-slate-400 text-xs">OK</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="px-4 py-3">
+                                                                <div class="flex items-center gap-2">
+                                                                    <div
+                                                                        class="h-6 w-6 rounded bg-blue-100 dark:bg-blue-900 border border-blue-200 dark:border-blue-800">
+                                                                    </div>
+                                                                    <span
+                                                                        class="text-slate-700 dark:text-slate-300">Light
+                                                                        Blue / L</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="px-4 py-3 font-mono text-xs text-slate-500">
+                                                                VDJ-LB-L</td>
+                                                            <td
+                                                                class="px-4 py-3 text-red-600 dark:text-red-400 font-bold">
+                                                                2</td>
+                                                            <td class="px-4 py-3 text-right">
+                                                                <span
+                                                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-900">
+                                                                    <span
+                                                                        class="material-symbols-outlined text-[12px]">warning</span>
+                                                                    Low Stock
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="px-4 py-3">
+                                                                <div class="flex items-center gap-2">
+                                                                    <div
+                                                                        class="h-6 w-6 rounded bg-slate-800 border border-slate-600">
+                                                                    </div>
+                                                                    <span
+                                                                        class="text-slate-700 dark:text-slate-300">Black
+                                                                        / M</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="px-4 py-3 font-mono text-xs text-slate-500">
+                                                                VDJ-BK-M</td>
+                                                            <td
+                                                                class="px-4 py-3 text-slate-900 dark:text-white font-medium">
+                                                                4</td>
+                                                            <td class="px-4 py-3 text-right">
+                                                                <span
+                                                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-900">
+                                                                    Near Low
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 3: Product with Low Stock Warning -->
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                        <td class="px-6 py-4">
+                                            <input
+                                                class="rounded border-slate-300 text-primary focus:ring-primary bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                                                type="checkbox" />
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-4">
+                                                <button class="text-slate-400 hover:text-primary transition-colors">
+                                                    <span class="material-symbols-outlined">keyboard_arrow_right</span>
+                                                </button>
+                                                <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-700 bg-cover bg-center shrink-0 border border-slate-200 dark:border-slate-600"
+                                                    data-alt="Minimalist leather wallet"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBc2Jy1o4FdW8-sJ_yAsmlPt_v1G9_ZpiHsXctipFeaJeYk6iRYeAiU_AuOpg4rb1e7MscB7n3fnfVSQs3Iv-xU4RTDoxdOWnDyzcOTok_3icyhCmCCyofRqu_xOR9aS6mvDk46B1RvoOCCOkFYOOilliBAYvGAmBTaaE-RidRKFGtKsMcg-sUQkscbdtHHhvf9FY9n2ZQ5K6v-bKyKdkX85cZHDP7A09dfDLb1Q2Np0z90uPoUYcQeHFhh6GZtmVbUA-Arw6F2iow");'>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-900 dark:text-white">Leather Card
+                                                        Holder</p>
+                                                    <p class="text-xs text-slate-500">Accessories</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-mono text-xs">LCH-TAN-01</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-16 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-red-500 w-[5%]"></div>
+                                                </div>
+                                                <span class="text-red-600 dark:text-red-400 font-bold">5</span>
+                                                <span class="material-symbols-outlined text-[16px] text-red-500"
+                                                    title="Critical Stock">error</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">$45.00</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                                Draft
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                            <button class="text-slate-400 hover:text-red-500 transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 4: Normal Product -->
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                        <td class="px-6 py-4">
+                                            <input
+                                                class="rounded border-slate-300 text-primary focus:ring-primary bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                                                type="checkbox" />
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-4">
+                                                <button class="text-slate-400 hover:text-primary transition-colors">
+                                                    <span class="material-symbols-outlined">keyboard_arrow_right</span>
+                                                </button>
+                                                <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-700 bg-cover bg-center shrink-0 border border-slate-200 dark:border-slate-600"
+                                                    data-alt="Black sleek smart watch"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAkmynAr61opsnsMyQBHbZALcyZXQZiaa1u_ch_JdNj1R3INxDSXhp2da51G5Ohfc6vCy7Z4vx9kLiSYtS2JxjOJtS77yH7muCtFXphB2oe8d74HmuYG_mx0piZnznreE_CS3LeyOtyZNe7-6l2im-9FTu0cXtEDM1tL2Uqm5InaklLYNhVTGsJp2mnwKJeU_-931M_Bdgb48o3y9h20SzQQHOwBTVP93ygHGOU-hoPtpqhkF7aERJsES1l2G73pNAkGo4-tv2uLY4");'>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-900 dark:text-white">Smart Fitness
+                                                        Band</p>
+                                                    <p class="text-xs text-slate-500">Electronics</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-mono text-xs">SFB-GEN2</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-16 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-green-500 w-[60%]"></div>
+                                                </div>
+                                                <span class="text-slate-900 dark:text-white font-medium">420</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">$149.99</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                                <span
+                                                    class="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                                                Active
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                            <button class="text-slate-400 hover:text-red-500 transition-colors p-1">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark border-t border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
+                                Showing <span class="font-bold text-slate-900 dark:text-white">1</span> to <span
+                                    class="font-bold text-slate-900 dark:text-white">4</span> of <span
+                                    class="font-bold text-slate-900 dark:text-white">1,240</span> results
+                            </p>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1 text-sm rounded-md border border-slate-200 dark:border-slate-700 text-slate-500 disabled:opacity-50"
+                                    disabled="">Previous</button>
+                                <button
+                                    class="px-3 py-1 text-sm rounded-md bg-primary text-white font-medium">1</button>
+                                <button
+                                    class="px-3 py-1 text-sm rounded-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">2</button>
+                                <button
+                                    class="px-3 py-1 text-sm rounded-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">3</button>
+                                <span class="px-2 py-1 text-slate-400">...</span>
+                                <button
+                                    class="px-3 py-1 text-sm rounded-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

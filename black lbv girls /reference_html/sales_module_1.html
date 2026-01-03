@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sales Module - POS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better desktop feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col selection:bg-primary/20">
+    <!-- Header -->
+    <header
+        class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-900 px-6 py-3 z-20">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
+                <span class="material-symbols-outlined text-2xl">point_of_sale</span>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold leading-tight tracking-tight">Sales Terminal</h2>
+                <div class="flex items-center gap-2">
+                    <span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Register #01 • Online</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div
+                class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-background-light dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="material-symbols-outlined text-slate-500 text-[20px]">calendar_today</span>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Oct 24, 2023</span>
+            </div>
+            <button
+                class="relative flex size-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-slate-600 dark:text-slate-300 transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span
+                    class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+            </button>
+            <button
+                class="flex size-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-slate-600 dark:text-slate-300 transition-colors">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+            <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                <div class="text-right hidden sm:block">
+                    <p class="text-sm font-bold leading-none">Alex M.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Cashier</p>
+                </div>
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-white dark:ring-gray-800 shadow-sm"
+                    data-alt="Portrait of the current user cashier"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDWvXXZrNXrQdjU4vpqrjI1ph0y3BSrGMawX_CvRAxvMT3UAdHiIhWds8ECQYdKVrHQaLeczn34EwnK-qYkB09yeFV2Pp6njw7EkGGVwr1DIFDEn9m7R3HACXYYIrN7dzghe9Q23ulHWrbu7r-XU3TlVDKzbMqWjsBT4jlv0WbAV8hSjNG1tXn0mm-FWcJnz2fcCPOLWag5yDZ4BnpHgERHfSdwc9NXicxFygtKq_Z3iRZdOfEHXrx_ci84x7htRa56CpAD43WBf3Y");'>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Workspace -->
+    <main class="flex-1 flex overflow-hidden">
+        <!-- LEFT COLUMN: Catalog & Discovery -->
+        <section class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark relative">
+            <!-- Search & Filter Bar -->
+            <div class="px-6 py-4 flex flex-col gap-4 bg-background-light dark:bg-background-dark z-10 sticky top-0">
+                <div class="flex gap-4">
+                    <!-- Search Input -->
+                    <div class="flex-1 relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-slate-400">search</span>
+                        </div>
+                        <input
+                            class="block w-full pl-10 pr-3 py-3 border-none rounded-xl bg-white dark:bg-gray-800 text-slate-900 dark:text-white shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 placeholder:text-slate-400 focus:ring-2 focus:ring-primary focus:outline-none transition-shadow"
+                            placeholder="Scan barcode or search products (SKU, Name)..." type="text" />
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <kbd
+                                class="hidden sm:inline-block px-2 py-0.5 bg-slate-100 dark:bg-gray-700 text-slate-500 dark:text-slate-400 rounded text-xs font-medium border border-slate-200 dark:border-slate-600">Ctrl+K</kbd>
+                        </div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <button
+                        class="flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-200 rounded-xl shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors font-medium">
+                        <span class="material-symbols-outlined">qr_code_scanner</span>
+                        <span class="hidden lg:inline">Scan</span>
+                    </button>
+                </div>
+                <!-- Category Chips -->
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-sm font-semibold shadow-md whitespace-nowrap transition-transform active:scale-95">
+                        <span class="material-symbols-outlined text-[18px]">grid_view</span>
+                        All Items
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-gray-700 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">styler</span>
+                        Clothing
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-gray-700 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">do_not_step</span>
+                        Footwear
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-gray-700 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">watch</span>
+                        Accessories
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-gray-700 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">headphones</span>
+                        Electronics
+                    </button>
+                </div>
+            </div>
+            <!-- Product Grid -->
+            <div class="flex-1 overflow-y-auto px-6 pb-6">
+                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <!-- Product Card 1 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full">
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-300"
+                                data-alt="Red Nike Air Max sneaker side view"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkoADxYFgvCnYumwNqHN2zIdMQ6qfK5d-WyTemrgcdqD27fbIdmeQxqiFFquZk0hUHtcAIE5iUTiWJdZTyb00aRRDOUVR52y4te2q8OooHE13428wzvrgJ8MVabZjGXyKVSrxAk78_g0G_ESZZ2BI5yAQxJ7dx_IvNnQpRTYN5Kvs_wznqazL-cPJDIL7_DukiW_oE7yhQjv1yIf1GyALOtpIYCFXuDxOIyatYQ6sLGoHUFCtETpoPu7xcBMP6RJTmwdl3BTTjbvA");'>
+                            </div>
+                            <div
+                                class="absolute top-2 right-2 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-bold shadow-sm">
+                                4 in stock
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Nike Air
+                                Max 270</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Red • Size 42</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-primary font-bold text-lg">$120.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full">
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-300"
+                                data-alt="Black Adidas Ultraboost running shoe"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBOjDg0CSm3CFDaPJZ2jthnwlV4aQjuBqe1c9k2nNVJgcLBxzDCGTfnHXejdlufWZGzabFpVd5IU3-9rxI2bLBcM7wa_xICCPzAXaYTcGARyrDQEY1_KrK5R3J8qoF2bdVEnOFRoU3Ww0M07uqvHKtpnwVw7IZgVZX4t7-k0czVb43fjEOX3UOhD4aLPLbEDc4ROwZmpaNvj0M_O6wwK8Rz2QBkLO_CzJUxRzPUvpz88WqCzC6AVuRFg9T5yNj2bubq-eZB-JVVxhc");'>
+                            </div>
+                            <div
+                                class="absolute top-2 right-2 bg-green-100 text-green-700 px-2 py-1 rounded-md text-xs font-bold shadow-sm">
+                                12 in stock
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Adidas
+                                Ultraboost</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Black • Size 40</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-primary font-bold text-lg">$180.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full">
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-300"
+                                data-alt="Modern Sony Headphones silver color"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAuhf0FyZRXjcGuPfxU3sF-C3TcsehzZ8t7MPCqDXr0_ZouLgN7aTHeMe7N9H1GEYQ8Ld-q0BzMzmLl93ej0abGjB9c31f3i00q_dz51jJZ0bd5Vy22j_2ImdWMXbEpK9STtA0U0zQaV4agzoToR5i9HmJJqoSG6NSCs8emEOsXZm8TpXiQZGj_7wiY3YSh1rVOCV2eUTAUv-IxhCJsXhIwZBJCT-Fk7mCdFZkmfiWZHz_jRKQEYufWCW-UhiOV-6c5n8b7nSSDDKk");'>
+                            </div>
+                            <div
+                                class="absolute top-2 right-2 bg-red-100 text-red-600 px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[10px]">warning</span> Low
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Sony
+                                WH-1000XM4</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Silver • Noise Canceling</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-primary font-bold text-lg">$349.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full">
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-300"
+                                data-alt="Smart Apple Watch with dark band"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC9hW3cnETJoVG8Sk3wLCm5ksF5XfF4WTfa5bZU-CwtmEEn0I4vqbgaEeObpYnV3pzehFOMmY4vgWCRaL4-enrdhGTMpkUCr8E_wlCFb5ZmEePvpGBa5vsCR8jiVdaAmuWmeDEC3KgAPj7s8DITw9korhtyEP30CNWQoPXL99uL8JtYXpSm66bxzQWMdyRj6hP6MQkNBv76Q6M6Wh9xrsxTKluGfhnrl3o9TWCppU-zMw4UjvnnAjfsZTtRK5qgU-Ziov3RP2-6XrA");'>
+                            </div>
+                            <div
+                                class="absolute top-2 right-2 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-bold shadow-sm">
+                                8 in stock
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Apple
+                                Watch Series 8</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Midnight • 45mm</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-primary font-bold text-lg">$399.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 5 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full opacity-60">
+                        <!-- Overlay for out of stock -->
+                        <div
+                            class="absolute inset-0 z-10 bg-white/50 dark:bg-black/50 rounded-2xl flex items-center justify-center cursor-not-allowed">
+                            <span
+                                class="bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider transform -rotate-12 shadow-lg">Out
+                                of Stock</span>
+                        </div>
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover grayscale"
+                                data-alt="Simple grey cotton t-shirt"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJsHX1G2LxivD0mBiGyzsaxClSk9uCTftiNOasTkhFMnp1PJcjmHaYSPkXRjkSaj6k9LYzw4Nc9f-HVpyrc8bAMzkzfMkLQXEBcN5qYGAUlFqWD-kh-vBuZeMrJ-PS8Gh_uh3Kaz_rmjHXpdc-d-kYwNV8YqYbz6aTxKA_SXKbD4k9XXgHStBsCfYQ1hOe8DuUQZAjG2cQlidd5LDxrFeCNO2cpjBATTpgIn_lwtBG79fkGLNFeqLci5bQPQ7PjOlQkXLP7UNQmR0");'>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Basic
+                                Cotton Tee</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Grey • L</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-slate-400 font-bold text-lg">$25.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center cursor-not-allowed">
+                                    <span class="material-symbols-outlined text-lg">block</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 6 -->
+                    <div
+                        class="group relative bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm hover:shadow-md border border-transparent hover:border-primary/50 transition-all cursor-pointer flex flex-col h-full">
+                        <div
+                            class="aspect-square w-full rounded-xl bg-slate-100 dark:bg-gray-700 overflow-hidden mb-3 relative">
+                            <div class="w-full h-full bg-center bg-cover transform group-hover:scale-105 transition-transform duration-300"
+                                data-alt="Blue Hydro Flask water bottle"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBHAWFM7K2bmOnMmLg7KVaQGXzO0uYtQ77MChDS_9cPggmQUpcA5f8R5HbpnsveIAna8mYSrEu3ubgg6pyvJyhSKVdBhv25CtJi38VlPnK3SHbHb8YeDpRoopqhnB4S5Rrd1VvErEqZQ9IKGGZwjnQ3N_XkXAUhR7LD94Rxu2J2pu7cNCBz627U3Uwunhk3JJVleQAhnmxHuY8Qy1shqbge-CEhk1ZN7qsTzdkse04it_Qzby5pkMQKO7T-iTsBB4uxWCsp-CZUgm4");'>
+                            </div>
+                            <div
+                                class="absolute top-2 right-2 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-bold shadow-sm">
+                                22 in stock
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-slate-900 dark:text-white font-semibold text-sm leading-tight mb-1">Hydro
+                                Flask 32oz</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Pacific Blue</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-primary font-bold text-lg">$45.00</span>
+                                <button
+                                    class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- RIGHT COLUMN: Cart & Checkout -->
+        <section
+            class="w-[420px] flex flex-col bg-white dark:bg-gray-900 shadow-2xl z-20 border-l border-slate-200 dark:border-slate-800 h-full">
+            <!-- Customer Selector -->
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Current Customer</h3>
+                    <button class="text-primary text-xs font-semibold hover:underline">New Customer +</button>
+                </div>
+                <div class="relative">
+                    <div
+                        class="flex items-center p-3 bg-slate-50 dark:bg-gray-800 rounded-xl border border-transparent hover:border-primary/30 transition-colors cursor-pointer group">
+                        <div
+                            class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-bold text-slate-900 dark:text-white">Walk-in Customer</p>
+                            <p class="text-xs text-slate-500">Guest Checkout</p>
+                        </div>
+                        <button class="p-1 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-full text-slate-400">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Items List -->
+            <div class="flex-1 overflow-y-auto px-4 py-2 space-y-3">
+                <!-- Cart Item 1 -->
+                <div class="flex gap-3 py-2 group">
+                    <div class="size-14 rounded-lg bg-slate-100 dark:bg-gray-800 bg-center bg-cover shrink-0"
+                        data-alt="Thumbnail of Red Nike Air Max"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAkB1GBfiyIoPovb3qeJ81ATlVtAWcMxHfqC8VsnyJz5NB6ZYzgzmFxvwae2Rapm0BkCfklVx5K_BL6Mvnqn6GpSUDApUBpeumwmLfcKrgdZKUMB5_TqxUpBWRjPaaCW29gzK70nW4jfXK6VksNSy_YGl8eFc05iFDbAAIfE5gVrEVDMvH1I2Dnl85MRYo88cPUX0fNNzDwttzqwpXeT5W9Ol_WWwoYUc97SvqZIDN7VdXPvYih_PJ_9Pc6pJhdyndNppjyEgG9rxQ");'>
+                    </div>
+                    <div class="flex-1 min-w-0 flex flex-col justify-between">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-900 dark:text-white truncate pr-2">Nike Air
+                                    Max 270</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Size 42 - Red</p>
+                            </div>
+                            <span class="font-bold text-sm text-slate-900 dark:text-white">$120.00</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <div class="flex items-center bg-slate-100 dark:bg-gray-800 rounded-lg p-0.5">
+                                <button
+                                    class="size-6 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-gray-700 shadow-sm text-slate-600 dark:text-slate-300 transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                <span class="w-8 text-center text-xs font-semibold tabular-nums">1</span>
+                                <button
+                                    class="size-6 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-gray-700 shadow-sm text-slate-600 dark:text-slate-300 transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
+                            <button
+                                class="text-slate-400 hover:text-red-500 transition-colors p-1 opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cart Item 2 -->
+                <div class="flex gap-3 py-2 group">
+                    <div class="size-14 rounded-lg bg-slate-100 dark:bg-gray-800 bg-center bg-cover shrink-0"
+                        data-alt="Thumbnail of Black Adidas shoes"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDcwpd9Ig_zMyQInflS1GGKLNoeoVRFKiOxNf4KKKLMYCcaI8i5KSgOyV81Cre55Rnr3RGDyxVBiLt2gJ-bwXdis3MB2w4R_OV_5iJVKNMKNhYOH3PMf-_NqLxuFwVzQL6JaclC7cDRc-XR4ZN9bWiOIrtzxpn862xnBiPktFK0jOPZuJ7GbvGViDDR1MKYFwrD17nen0W108AOMzQWEM-ENH7DLA6sTmmWjZZ4X4I-Ct0eOCNDc3t1QOSR_tNH48CZDGxYc5aCrY8");'>
+                    </div>
+                    <div class="flex-1 min-w-0 flex flex-col justify-between">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-sm font-semibold text-slate-900 dark:text-white truncate pr-2">Adidas
+                                    Ultraboost</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Size 40 - Black</p>
+                            </div>
+                            <span class="font-bold text-sm text-slate-900 dark:text-white">$360.00</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <div class="flex items-center bg-slate-100 dark:bg-gray-800 rounded-lg p-0.5">
+                                <button
+                                    class="size-6 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-gray-700 shadow-sm text-slate-600 dark:text-slate-300 transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                <span class="w-8 text-center text-xs font-semibold tabular-nums">2</span>
+                                <button
+                                    class="size-6 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-gray-700 shadow-sm text-slate-600 dark:text-slate-300 transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
+                            <button
+                                class="text-slate-400 hover:text-red-500 transition-colors p-1 opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Empty state placeholder (hidden for now) -->
+                <!-- 
+                <div class="flex flex-col items-center justify-center h-48 text-slate-400">
+                    <span class="material-symbols-outlined text-4xl mb-2">shopping_cart_off</span>
+                    <p>Cart is empty</p>
+                </div> 
+                -->
+            </div>
+            <!-- Financial Summary & Checkout -->
+            <div class="bg-slate-50 dark:bg-gray-800/50 p-6 border-t border-slate-200 dark:border-slate-800">
+                <!-- Calculation Rows -->
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-sm text-slate-600 dark:text-slate-400">
+                        <span>Subtotal</span>
+                        <span class="font-medium text-slate-900 dark:text-white tabular-nums">$480.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-slate-600 dark:text-slate-400">
+                        <span>Tax (8%)</span>
+                        <span class="font-medium text-slate-900 dark:text-white tabular-nums">$38.40</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-slate-600 dark:text-slate-400 items-center">
+                        <span
+                            class="dashed-underline cursor-pointer border-b border-dashed border-slate-400">Discount</span>
+                        <span class="font-medium text-green-600 tabular-nums">-$0.00</span>
+                    </div>
+                    <div class="my-2 h-px bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-base font-bold text-slate-900 dark:text-white">Total</span>
+                        <span class="text-2xl font-bold text-slate-900 dark:text-white tabular-nums">$518.40</span>
+                    </div>
+                </div>
+                <!-- Payment Methods -->
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <button
+                        class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white dark:bg-gray-800 border-2 border-primary text-primary shadow-sm">
+                        <span class="material-symbols-outlined text-[20px]">payments</span>
+                        <span class="text-[10px] font-bold mt-1">Cash</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">credit_card</span>
+                        <span class="text-[10px] font-medium mt-1">Card</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">smartphone</span>
+                        <span class="text-[10px] font-medium mt-1">Mobile</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">call_split</span>
+                        <span class="text-[10px] font-medium mt-1">Split</span>
+                    </button>
+                </div>
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-[auto_1fr] gap-3">
+                    <button
+                        class="flex items-center justify-center px-4 rounded-xl bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 transition-colors"
+                        title="Hold Order">
+                        <span class="material-symbols-outlined">pause_circle</span>
+                    </button>
+                    <button
+                        class="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/30 hover:bg-blue-600 active:translate-y-0.5 transition-all">
+                        <span>Charge</span>
+                        <span class="bg-white/20 px-2 py-0.5 rounded text-sm font-semibold">$518.40</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

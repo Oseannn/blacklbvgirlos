@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Invoice #INV-2023-001 - POS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        @media print {
+            @page { margin: 0; }
+            body {
+                background: white;
+                color: black;
+            }
+            header, .no-print {
+                display: none !important;
+            }
+            #invoice-preview {
+                box-shadow: none !important;
+                margin: 0 !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: none !important;
+                padding: 2cm !important;
+            }
+            main {
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col selection:bg-primary/20">
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-900 px-6 py-3 z-20 no-print">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center size-10 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-slate-500 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Invoice Generated</h2>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Validation Complete</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-200 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors font-medium text-sm">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+            Email
+        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-200 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors font-medium text-sm" onclick="window.print()">
+<span class="material-symbols-outlined text-[20px]">print</span>
+            Print PDF
+        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg shadow-sm hover:bg-blue-600 transition-colors font-medium text-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+            New Sale
+        </button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-4 md:p-8 flex justify-center items-start">
+<div class="w-full max-w-[800px] bg-white text-slate-900 shadow-xl rounded-sm p-12 relative min-h-[1000px] flex flex-col" id="invoice-preview">
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">
+<span class="material-symbols-outlined text-[400px]">verified</span>
+</div>
+<div class="flex justify-between items-start mb-12 border-b border-slate-100 pb-8">
+<div class="flex items-start gap-4">
+<div class="size-16 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-4xl">storefront</span>
+</div>
+<div>
+<h1 class="text-2xl font-bold tracking-tight text-slate-900 uppercase">Luxe Retail</h1>
+<p class="text-sm text-slate-500 mt-1">123 Fashion Avenue<br/>Metropolis, NY 10012<br/>contact@luxeretail.com</p>
+</div>
+</div>
+<div class="text-right">
+<h2 class="text-4xl font-light text-slate-300 tracking-wider uppercase mb-2">Invoice</h2>
+<div class="space-y-1">
+<p class="text-sm font-medium"><span class="text-slate-400 w-24 inline-block">Invoice #:</span> <span class="text-slate-900">INV-2023-08492</span></p>
+<p class="text-sm font-medium"><span class="text-slate-400 w-24 inline-block">Date:</span> <span class="text-slate-900">Oct 24, 2023</span></p>
+<p class="text-sm font-medium"><span class="text-slate-400 w-24 inline-block">Associate:</span> <span class="text-slate-900">Alex M.</span></p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-12 mb-12">
+<div>
+<h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Bill To</h3>
+<div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+<h4 class="font-bold text-slate-900 text-lg mb-1">Sarah Jenkins</h4>
+<p class="text-sm text-slate-600 mb-3">+1 (555) 123-4567</p>
+<div class="flex gap-4 border-t border-slate-200 pt-3">
+<div>
+<p class="text-[10px] uppercase text-slate-400 font-bold">Client Type</p>
+<p class="text-sm font-medium text-slate-700">VIP Member</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-slate-400 font-bold">Client Code</p>
+<p class="text-sm font-medium text-slate-700">CUST-8821</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col justify-end items-end">
+<div class="border-2 border-green-600 text-green-700 px-6 py-2 rounded-lg font-bold text-xl uppercase tracking-widest opacity-80 transform -rotate-2">
+                    Paid
+                </div>
+</div>
+</div>
+<div class="flex-1 mb-8">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b-2 border-slate-900">
+<th class="py-3 text-xs font-bold text-slate-900 uppercase tracking-wider w-12">#</th>
+<th class="py-3 text-xs font-bold text-slate-900 uppercase tracking-wider">Item Description</th>
+<th class="py-3 text-xs font-bold text-slate-900 uppercase tracking-wider text-right">Qty</th>
+<th class="py-3 text-xs font-bold text-slate-900 uppercase tracking-wider text-right">Unit Price</th>
+<th class="py-3 text-xs font-bold text-slate-900 uppercase tracking-wider text-right">Total</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b border-slate-100">
+<td class="py-4 text-slate-400">01</td>
+<td class="py-4">
+<p class="font-semibold text-slate-900">Nike Air Max 270</p>
+<p class="text-xs text-slate-500">Size 42 - Red</p>
+</td>
+<td class="py-4 text-right tabular-nums text-slate-600">1</td>
+<td class="py-4 text-right tabular-nums text-slate-600">$120.00</td>
+<td class="py-4 text-right tabular-nums font-medium text-slate-900">$120.00</td>
+</tr>
+<tr class="border-b border-slate-100">
+<td class="py-4 text-slate-400">02</td>
+<td class="py-4">
+<p class="font-semibold text-slate-900">Adidas Ultraboost</p>
+<p class="text-xs text-slate-500">Size 40 - Black</p>
+</td>
+<td class="py-4 text-right tabular-nums text-slate-600">2</td>
+<td class="py-4 text-right tabular-nums text-slate-600">$180.00</td>
+<td class="py-4 text-right tabular-nums font-medium text-slate-900">$360.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex justify-end mb-12">
+<div class="w-1/2 space-y-3">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 font-medium">Subtotal</span>
+<span class="text-slate-900 font-bold tabular-nums">$480.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 font-medium">Tax (8%)</span>
+<span class="text-slate-900 font-bold tabular-nums">$38.40</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 font-medium">Discount</span>
+<span class="text-green-600 font-bold tabular-nums">-$0.00</span>
+</div>
+<div class="h-px bg-slate-200 my-2"></div>
+<div class="flex justify-between items-center text-lg">
+<span class="text-slate-900 font-bold">Total Amount</span>
+<span class="text-primary font-bold tabular-nums text-2xl">$518.40</span>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-100">
+<div class="flex items-center justify-between text-xs bg-slate-50 rounded px-3 py-2 border border-slate-100">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-lg">credit_card</span>
+<span class="font-semibold text-slate-700 uppercase">Payment Method</span>
+</div>
+<span class="font-mono text-slate-600">Visa ending in 4242</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-8 border-t-2 border-slate-100 text-center">
+<h4 class="font-bold text-slate-900 mb-2">Thank you for shopping with us!</h4>
+<div class="text-xs text-slate-400 space-y-1 max-w-lg mx-auto leading-relaxed">
+<p>Items purchased can be returned within 30 days of purchase with original receipt. Sale items are final and cannot be returned. Please keep this invoice for your records.</p>
+<p class="pt-2">Luxe Retail Inc. © 2023</p>
+</div>
+<div class="mt-8">
+<svg class="h-12 w-full text-slate-900 opacity-20" preserveAspectRatio="none" viewBox="0 0 100 10">
+<path d="M0 0 L2 10 L4 0 L6 10 L8 0 L10 10 L12 0 L14 10 L16 0 L18 10 L20 0 L22 10 L24 0 L26 10 L28 0 L30 10 L32 0 L34 10 L36 0 L38 10 L40 0 L42 10 L44 0 L46 10 L48 0 L50 10 L52 0 L54 10 L56 0 L58 10 L60 0 L62 10 L64 0 L66 10 L68 0 L70 10 L72 0 L74 10 L76 0 L78 10 L80 0 L82 10 L84 0 L86 10 L88 0 L90 10 L92 0 L94 10 L96 0 L98 10 L100 0 V10 H0 Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>RetailOS - Sign In</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-full min-h-screen">
+    <div class="flex min-h-screen w-full flex-col lg:flex-row">
+        <!-- Left Side: Branding & Visuals -->
+        <div class="hidden lg:flex w-full lg:w-1/2 bg-slate-900 relative items-center justify-center overflow-hidden">
+            <!-- Abstract Dashboard/Retail Background -->
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-slate-900/90 z-10 mix-blend-multiply">
+            </div>
+            <img alt="Retail Store Background" class="absolute inset-0 h-full w-full object-cover opacity-60"
+                data-alt="Modern retail store payment terminal and checkout counter"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVSlw-gDkjVO9P_E-xO_hUHDlA5ngLrSfOciTVxtJV0gmZbmu9bMDasOhoDs7zJ3-_VTHRpkDknYCnfOSaWpGXR40HT2zIdw535DWls3pTNbR95Oyhy3DTWKU9xRYtZNXS9sv7ErCyekTuPajtylIynxm97FQ-XtT-hWkxw4mvMFrQ6qqoan7kOrPL1urDqFRprXHzUblv3_QVXsrmegHBXGCrdVPv9RAWuB_zX8xQkl6ACAzUJ9wV8Z0o5cwerbs_dTknCsSQ0I4" />
+            <div class="relative z-20 flex flex-col items-center px-12 text-center text-white">
+                <div
+                    class="mb-8 flex items-center justify-center h-20 w-20 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl">
+                    <span class="material-symbols-outlined text-5xl text-white">storefront</span>
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-4 text-white">Welcome to RetailOS</h2>
+                <p class="text-lg text-slate-200 max-w-md mx-auto leading-relaxed">
+                    The all-in-one platform for inventory management, sales tracking, and staff coordination.
+                </p>
+                <!-- Trust indicators -->
+                <div class="mt-12 flex gap-8 opacity-70">
+                    <div class="flex flex-col items-center">
+                        <span class="text-2xl font-bold">10k+</span>
+                        <span class="text-xs uppercase tracking-wider">Stores</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-2xl font-bold">99.9%</span>
+                        <span class="text-xs uppercase tracking-wider">Uptime</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-2xl font-bold">24/7</span>
+                        <span class="text-xs uppercase tracking-wider">Support</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Side: Login Form -->
+        <div
+            class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24 bg-white dark:bg-background-dark border-l border-slate-200 dark:border-slate-800">
+            <div class="mx-auto w-full max-w-md">
+                <!-- Mobile Logo (Visible only on small screens) -->
+                <div class="lg:hidden flex justify-center mb-8">
+                    <div class="flex items-center justify-center h-14 w-14 rounded-xl bg-primary text-white">
+                        <span class="material-symbols-outlined text-3xl">storefront</span>
+                    </div>
+                </div>
+                <!-- Header Section -->
+                <div class="text-center mb-8">
+                    <h1 class="text-slate-900 dark:text-white tracking-tight text-[32px] font-bold leading-tight">
+                        Sign in to RetailOS
+                    </h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal pt-2">
+                        Enter your credentials to access the retail dashboard.
+                    </p>
+                </div>
+                <!-- Role Selector (Segmented Buttons) -->
+                <div class="mb-8">
+                    <div
+                        class="flex w-full items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700">
+                        <label
+                            class="group relative flex cursor-pointer flex-1 items-center justify-center overflow-hidden rounded-md py-2 px-3 text-sm font-medium transition-all">
+                            <input checked="" class="peer sr-only" name="role" type="radio" value="Admin" />
+                            <span
+                                class="relative z-10 text-slate-500 peer-checked:text-primary dark:text-slate-400 dark:peer-checked:text-primary transition-colors flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                                Admin
+                            </span>
+                            <div
+                                class="absolute inset-0 z-0 scale-95 bg-white shadow-sm opacity-0 transition-all duration-200 peer-checked:scale-100 peer-checked:opacity-100 dark:bg-slate-700">
+                            </div>
+                        </label>
+                        <label
+                            class="group relative flex cursor-pointer flex-1 items-center justify-center overflow-hidden rounded-md py-2 px-3 text-sm font-medium transition-all">
+                            <input class="peer sr-only" name="role" type="radio" value="Manager" />
+                            <span
+                                class="relative z-10 text-slate-500 peer-checked:text-primary dark:text-slate-400 dark:peer-checked:text-primary transition-colors flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">manage_accounts</span>
+                                Manager
+                            </span>
+                            <div
+                                class="absolute inset-0 z-0 scale-95 bg-white shadow-sm opacity-0 transition-all duration-200 peer-checked:scale-100 peer-checked:opacity-100 dark:bg-slate-700">
+                            </div>
+                        </label>
+                        <label
+                            class="group relative flex cursor-pointer flex-1 items-center justify-center overflow-hidden rounded-md py-2 px-3 text-sm font-medium transition-all">
+                            <input class="peer sr-only" name="role" type="radio" value="Sales" />
+                            <span
+                                class="relative z-10 text-slate-500 peer-checked:text-primary dark:text-slate-400 dark:peer-checked:text-primary transition-colors flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
+                                Sales
+                            </span>
+                            <div
+                                class="absolute inset-0 z-0 scale-95 bg-white shadow-sm opacity-0 transition-all duration-200 peer-checked:scale-100 peer-checked:opacity-100 dark:bg-slate-700">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <!-- Login Form -->
+                <form action="#" class="space-y-6" method="POST">
+                    <!-- Email Field -->
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white mb-2"
+                            for="email">
+                            Email Address
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="material-symbols-outlined text-slate-400 text-[20px]">mail</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-lg border-0 py-3 pl-10 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-slate-800 dark:ring-slate-700 dark:text-white dark:placeholder:text-slate-500 sm:text-sm sm:leading-6 h-12"
+                                id="email" name="email" placeholder="user@retailos.com" type="email" value="" />
+                        </div>
+                    </div>
+                    <!-- Password Field -->
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white mb-2"
+                            for="password">
+                            Password
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="material-symbols-outlined text-slate-400 text-[20px]">lock</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-lg border-0 py-3 pl-10 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-slate-800 dark:ring-slate-700 dark:text-white dark:placeholder:text-slate-500 sm:text-sm sm:leading-6 h-12"
+                                id="password" name="password" placeholder="••••••••" type="password" />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer group">
+                                <span
+                                    class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors text-[20px]">visibility</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input
+                                class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary dark:bg-slate-800 dark:border-slate-600"
+                                id="remember-me" name="remember-me" type="checkbox" />
+                            <label class="ml-2 block text-sm text-slate-700 dark:text-slate-300"
+                                for="remember-me">Remember me</label>
+                        </div>
+                        <div class="text-sm">
+                            <a class="font-medium text-primary hover:text-blue-500" href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div>
+                        <button
+                            class="flex w-full justify-center rounded-lg bg-primary px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all active:scale-[0.98]"
+                            type="button">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+                <!-- Divider -->
+                <div class="mt-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="bg-white dark:bg-background-dark px-2 text-slate-500 dark:text-slate-400">Need
+                                help?</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer Support Link -->
+                <div class="mt-6 flex justify-center gap-4 text-center">
+                    <a class="flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-[18px]">support_agent</span>
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

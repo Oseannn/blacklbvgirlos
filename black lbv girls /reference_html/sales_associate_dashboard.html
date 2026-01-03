@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sales Associate Dashboard</title>
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2632",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200">
+    <!-- Main Layout Container -->
+    <div class="relative flex h-screen w-full overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside
+            class="hidden md:flex flex-col w-72 h-full bg-surface-light dark:bg-surface-dark border-r border-slate-200 dark:border-slate-800 transition-colors">
+            <div class="flex flex-col h-full p-4 justify-between">
+                <div class="flex flex-col gap-6">
+                    <!-- Brand/Store Info -->
+                    <div class="flex items-center gap-3 px-2">
+                        <div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 bg-primary/10 flex items-center justify-center text-primary"
+                            data-alt="RetailPOS Logo abstract blue circle">
+                            <span class="material-symbols-outlined text-2xl">point_of_sale</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight">RetailPOS</h1>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Store #104</p>
+                        </div>
+                    </div>
+                    <!-- Navigation Links -->
+                    <nav class="flex flex-col gap-2">
+                        <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#">
+                            <span class="material-symbols-outlined filled">dashboard</span>
+                            <span class="text-sm font-semibold">Dashboard</span>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-primary transition-colors">receipt_long</span>
+                            <span class="text-sm font-medium">Sales History</span>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-primary transition-colors">inventory_2</span>
+                            <span class="text-sm font-medium">Inventory</span>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+                            <span class="text-sm font-medium">Customers</span>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                            <span class="text-sm font-medium">Settings</span>
+                        </a>
+                    </nav>
+                </div>
+                <!-- Footer User Info (Optional addition for sidebar completeness) -->
+                <div
+                    class="flex items-center gap-3 px-3 py-3 mt-auto border-t border-slate-200 dark:border-slate-800 pt-4">
+                    <div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden"
+                        data-alt="User avatar placeholder abstract pattern"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjshtRk5wbelQprKb0acFlpM0fE22sancZISYisTBK0oJYMjr6opFbp6iU4j-5v5J__tY3YwWyK6Bj_Rpa4siSxpR786rQsQi75LN84LFhOCbFOrnvmhuCbfrof77tYNeaUERD60uSvq86V7ZruX6Zc_AAw3GLw2VOwlof4EVUSRNV9cVXgAPPeH8EqR93AldUE5oYw-CCDTzZFg1N4iRj0B9Qr09wT1tV20_RxDHKLJ9xhPxBvGk94AoVfGd1UOD0wyR-QHg7W0g');">
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-xs font-semibold text-slate-900 dark:text-white">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">ID: 882190</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col h-full overflow-y-auto relative">
+            <!-- Mobile Header (Visible only on small screens) -->
+            <div
+                class="md:hidden flex items-center justify-between p-4 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">point_of_sale</span>
+                    <span class="font-bold text-lg">RetailPOS</span>
+                </div>
+                <button class="p-2 text-slate-600">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+            <div class="w-full max-w-[1200px] mx-auto p-4 md:p-8 flex flex-col gap-6 md:gap-8">
+                <!-- Page Heading -->
+                <header class="flex flex-wrap justify-between items-end gap-4">
+                    <div class="flex flex-col gap-2">
+                        <h1
+                            class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">
+                            Welcome back, Sarah
+                        </h1>
+                        <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm md:text-base">
+                            <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                            <span>Wednesday, Oct 25</span>
+                            <span class="mx-1">•</span>
+                            <span class="material-symbols-outlined text-[20px]">schedule</span>
+                            <span>09:41 AM</span>
+                            <span class="mx-1">•</span>
+                            <span>Main Checkout</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm font-semibold border border-green-200 dark:border-green-800">
+                        <span class="material-symbols-outlined text-[18px] fill">wifi</span>
+                        Online
+                    </div>
+                </header>
+                <!-- Stats Grid -->
+                <section aria-label="Key Performance Indicators"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Register Status Card -->
+                    <div
+                        class="flex flex-col gap-3 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span class="material-symbols-outlined text-6xl text-slate-400">storefront</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">
+                            Register Status</p>
+                        <div class="flex items-center gap-3">
+                            <div class="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
+                            <p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">OPEN</p>
+                        </div>
+                        <p class="text-slate-400 text-xs mt-auto pt-2">Opened at 08:00 AM by Manager</p>
+                    </div>
+                    <!-- Total Sales Card -->
+                    <div
+                        class="flex flex-col gap-3 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span class="material-symbols-outlined text-6xl text-primary">payments</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Total
+                            Sales Today</p>
+                        <p
+                            class="text-slate-900 dark:text-white text-3xl font-bold leading-tight font-mono tracking-tight">
+                            $1,450.00</p>
+                        <div
+                            class="flex items-center gap-1 text-green-600 dark:text-green-400 text-sm font-medium mt-auto pt-2">
+                            <span class="material-symbols-outlined text-[18px]">trending_up</span>
+                            <span>+12% vs yesterday</span>
+                        </div>
+                    </div>
+                    <!-- Transactions Card -->
+                    <div
+                        class="flex flex-col gap-3 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span class="material-symbols-outlined text-6xl text-blue-400">receipt</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">
+                            Transactions</p>
+                        <p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">42</p>
+                        <p class="text-slate-400 text-xs mt-auto pt-2">Avg. Ticket: $34.52</p>
+                    </div>
+                </section>
+                <!-- Action Buttons Grid -->
+                <section aria-label="Quick Actions" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- New Sale (Primary Action) -->
+                    <button
+                        class="flex flex-col items-center justify-center gap-3 rounded-xl bg-primary hover:bg-blue-600 text-white p-6 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:-translate-y-1 group border border-transparent">
+                        <span
+                            class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">add_circle</span>
+                        <h2 class="text-lg font-bold leading-tight">New Sale</h2>
+                    </button>
+                    <!-- Register Control -->
+                    <button
+                        class="flex flex-col items-center justify-center gap-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md transition-all group">
+                        <span
+                            class="material-symbols-outlined text-4xl text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">lock_open</span>
+                        <h2 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Register Control
+                        </h2>
+                    </button>
+                    <!-- View My Sales -->
+                    <button
+                        class="flex flex-col items-center justify-center gap-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md transition-all group">
+                        <span
+                            class="material-symbols-outlined text-4xl text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">list_alt</span>
+                        <h2 class="text-slate-900 dark:text-white text-base font-bold leading-tight">View My Sales</h2>
+                    </button>
+                    <!-- Product Lookup -->
+                    <button
+                        class="flex flex-col items-center justify-center gap-3 rounded-xl bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md transition-all group">
+                        <span
+                            class="material-symbols-outlined text-4xl text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">search</span>
+                        <h2 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Product Lookup</h2>
+                    </button>
+                </section>
+                <!-- Recent Activity Section -->
+                <section
+                    class="flex flex-col gap-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div
+                        class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                        <h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Recent Activity</h3>
+                        <a class="text-primary text-sm font-semibold hover:underline" href="#">View All</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead
+                                class="uppercase tracking-wider border-b-2 border-slate-100 dark:border-slate-700 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                <tr>
+                                    <th class="px-6 py-3" scope="col">Transaction ID</th>
+                                    <th class="px-6 py-3" scope="col">Time</th>
+                                    <th class="px-6 py-3" scope="col">Type</th>
+                                    <th class="px-6 py-3" scope="col">Payment</th>
+                                    <th class="px-6 py-3 text-right" scope="col">Amount</th>
+                                    <th class="px-6 py-3 text-center" scope="col">Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700 dark:text-slate-300">
+                                <tr
+                                    class="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4 font-medium">#TRX-0042</td>
+                                    <td class="px-6 py-4">09:35 AM</td>
+                                    <td class="px-6 py-4"><span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">Sale</span>
+                                    </td>
+                                    <td class="px-6 py-4 flex items-center gap-2">
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-slate-400">credit_card</span>
+                                        Visa •••• 4242
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-mono font-semibold">$124.50</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">print</span></button>
+                                    </td>
+                                </tr>
+                                <tr
+                                    class="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4 font-medium">#TRX-0041</td>
+                                    <td class="px-6 py-4">09:22 AM</td>
+                                    <td class="px-6 py-4"><span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">Sale</span>
+                                    </td>
+                                    <td class="px-6 py-4 flex items-center gap-2">
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-slate-400">payments</span>
+                                        Cash
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-mono font-semibold">$45.00</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">print</span></button>
+                                    </td>
+                                </tr>
+                                <tr
+                                    class="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4 font-medium">#TRX-0040</td>
+                                    <td class="px-6 py-4">09:10 AM</td>
+                                    <td class="px-6 py-4"><span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">Return</span>
+                                    </td>
+                                    <td class="px-6 py-4 flex items-center gap-2">
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-slate-400">credit_card</span>
+                                        Mastercard •••• 8821
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-mono font-semibold text-red-500">-$22.90</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">print</span></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4 font-medium">#TRX-0039</td>
+                                    <td class="px-6 py-4">08:45 AM</td>
+                                    <td class="px-6 py-4"><span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">Sale</span>
+                                    </td>
+                                    <td class="px-6 py-4 flex items-center gap-2">
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-slate-400">phone_iphone</span>
+                                        Apple Pay
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-mono font-semibold">$210.00</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">print</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <div class="h-8"></div> <!-- Spacer -->
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
