@@ -37,7 +37,7 @@ const INITIAL_PRODUCTS = [
     name: 'Nike Air Max 270',
     sku: 'NIK-270-RED-42',
     category: 'Chaussures',
-    price: 120.00,
+    price: 120000, // Updated to typical FCFA amounts
     stock: 12,
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=300&h=300',
     status: 'active'
@@ -47,7 +47,7 @@ const INITIAL_PRODUCTS = [
     name: 'Adidas Ultraboost',
     sku: 'ADI-ULT-BLK-42',
     category: 'Chaussures',
-    price: 180.00,
+    price: 180000,
     stock: 8,
     image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=300&h=300',
     status: 'active'
@@ -57,7 +57,7 @@ const INITIAL_PRODUCTS = [
     name: 'T-Shirt Cotton Basic',
     sku: 'TSH-WHT-M',
     category: 'Vêtements',
-    price: 25.00,
+    price: 15000,
     stock: 50,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=300&h=300',
     status: 'active'
@@ -67,7 +67,7 @@ const INITIAL_PRODUCTS = [
     name: 'Jean Slim Fit',
     sku: 'JEA-BLU-32',
     category: 'Vêtements',
-    price: 59.90,
+    price: 35000,
     stock: 20,
     image: 'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?auto=format&fit=crop&q=80&w=300&h=300',
     status: 'active'
@@ -85,7 +85,7 @@ const INITIAL_CLIENTS = [
     createdBy: 'v_001',
     createdAt: '2024-01-01T10:00:00Z',
     notes: 'Préfère les baskets Nike',
-    totalSpent: 1250,
+    totalSpent: 1250000,
     lastVisit: '2024-01-15T14:30:00Z'
   },
   {
@@ -98,12 +98,12 @@ const INITIAL_CLIENTS = [
     createdBy: 'v_002',
     createdAt: '2024-02-10T11:20:00Z',
     notes: '',
-    totalSpent: 320,
+    totalSpent: 320000,
     lastVisit: '2024-02-28T16:15:00Z'
   }
 ];
 
-// Storage Wrapper
+// Define objects and immediately expose them to window
 const Storage = {
   get(key) {
     try {
@@ -148,8 +148,8 @@ const Storage = {
     }
   }
 };
+window.Storage = Storage;
 
-// Storage Utilities
 const StorageHelper = {
   // USERS
   getUsers() {
@@ -231,17 +231,12 @@ const StorageHelper = {
     return true;
   }
 };
-
-// Expose globally
-window.Storage = Storage;
 window.StorageHelper = StorageHelper;
 
 // Initialize on load
 try {
   Storage.init();
-  // Debug
-  const users = StorageHelper.getUsers();
-  console.log('RetailOS Storage initialized. Users:', users);
+  console.log('RetailOS Storage initialized.');
 } catch (e) {
   console.error('Failed to initialize storage:', e);
 }
