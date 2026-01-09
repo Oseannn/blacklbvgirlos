@@ -209,10 +209,13 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/scripts/storage.js"
-        onerror="console.error('Failed to load /scripts/storage.js'); alert('Erreur: Impossible de charger /scripts/storage.js.');"></script>
-    <script src="/scripts/auth.js"
-        onerror="console.error('Failed to load /scripts/auth.js'); alert('Erreur: Impossible de charger /scripts/auth.js.');"></script>
+    <script>
+        console.log('Current Path:', window.location.pathname);
+    </script>
+    <script src="logic/storage.js"
+        onerror="alert('Erreur: Impossible de charger logic/storage.js. Chemin actuel: ' + window.location.pathname);"></script>
+    <script src="logic/auth.js"
+        onerror="alert('Erreur: Impossible de charger logic/auth.js. Chemin actuel: ' + window.location.pathname);"></script>
     <script>
         // Check if already logged in (optional auto-redirect)
         /*
