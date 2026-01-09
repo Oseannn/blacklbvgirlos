@@ -212,10 +212,8 @@
     <script>
         console.log('Current Path:', window.location.pathname);
     </script>
-    <script src="logic/storage.js"
-        onerror="alert('Erreur: Impossible de charger logic/storage.js. Chemin actuel: ' + window.location.pathname);"></script>
-    <script src="logic/auth.js"
-        onerror="alert('Erreur: Impossible de charger logic/auth.js. Chemin actuel: ' + window.location.pathname);"></script>
+    <script src="storage.js" onerror="alert('Erreur: Impossible de charger storage.js.');"></script>
+    <script src="auth.js" onerror="alert('Erreur: Impossible de charger auth.js.');"></script>
     <script>
         // Check if already logged in (optional auto-redirect)
         /*

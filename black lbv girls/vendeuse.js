@@ -46,7 +46,7 @@ const VendeuseApp = {
         });
 
         // Hide all views
-        ['dashboard', 'pos', 'history', 'clients'].forEach(v => {
+        ['dashboard', 'pos', 'history', 'clients', 'caisse'].forEach(v => {
             const el = document.getElementById(`view-${v}`);
             if (el) {
                 el.classList.add('hidden');
@@ -71,13 +71,15 @@ const VendeuseApp = {
             dashboard: "Bonjour !",
             pos: "Caisse & Vente",
             history: "Historique des Ventes",
-            clients: "Mes Clientes"
+            clients: "Mes Clientes",
+            caisse: "Gestion de Caisse"
         };
         const subtext = {
             dashboard: "Prêt pour une excellente journée de vente ?",
             pos: "Ajoutez des produits au panier pour commencer.",
             history: "Consultez vos performances passées.",
-            clients: "Gérez votre carnet d'adresses."
+            clients: "Gérez votre carnet d'adresses.",
+            caisse: "Ouverture, fermeture et sorties de caisse."
         };
 
         const titleEl = document.getElementById('view-title');
@@ -87,6 +89,8 @@ const VendeuseApp = {
 
         // Specific Loads
         if (viewId === 'history') this.loadHistory();
+        if (viewId === 'caisse') this.loadCaisseView();
+        if (viewId === 'clients') this.loadClientsView();
     },
 
     formatCurrency(amount) {
@@ -135,7 +139,10 @@ const VendeuseApp = {
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-gray-900 line-clamp-1">#${sale.id.slice(-6)} • ${sale.clienteName || sale.clientName || 'Invité'}</p>
-                                <p class="text-xs text-gray-500">${new Date(sale.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })} • ${sale.items.length} articles</p>
+                                <div class="text-xs text-gray-500 mt-0.5">
+                                    <p>${new Date(sale.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })} • ${sale.items.length} articles</p>
+                                    <p class="text-gray-400 truncate max-w-[200px]">${sale.items.map(i => `${i.quantity} ${i.name}`).join(', ')}</p>
+                                </div>
                             </div>
                         </div>
                         <div class="text-right">
@@ -158,18 +165,443 @@ const VendeuseApp = {
         tbody.innerHTML = '';
         sales.slice().reverse().forEach(sale => {
             const tr = document.createElement('tr');
-            tr.className = 'hover:bg-gray-50';
+            tr.className = 'hover:bg-gray-50 border-b border-gray-100 last:border-0';
+
+            // Format items list
+            const itemsList = sale.items.map(i =>
+                `<div class="flex justify-between text-xs text-gray-500"><span class="truncate pr-2">${i.quantity}x ${i.name}</span><span>${this.formatCurrency(i.total)}</span></div>`
+            ).join('');
+
             tr.innerHTML = `
-                <td class="p-4 font-mono text-gray-600 text-xs">${sale.id}</td>
-                <td class="p-4">${new Date(sale.date).toLocaleString('fr-FR')}</td>
-                <td class="p-4 font-medium text-gray-900">${sale.clienteName || sale.clientName || 'Passage'}</td>
-                <td class="p-4 text-right font-bold text-gray-900">${this.formatCurrency(sale.total)}</td>
-                <td class="p-4 text-center">
-                    <span class="px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 uppercase">Complété</span>
+                <td class="p-4 align-top">
+                    <div class="font-mono text-gray-600 text-xs font-bold mb-1">${sale.id.slice(-8)}</div>
+                    <div class="text-xs text-gray-400">${new Date(sale.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</div>
+                </td>
+                <td class="p-4 align-top">
+                    <div class="font-medium text-gray-900">${sale.clienteName || sale.clientName || 'Passage'}</div>
+                    <div class="mt-2 space-y-1 bg-gray-50 p-2 rounded-lg">
+                        ${itemsList}
+                    </div>
+                </td>
+                <td class="p-4 align-top text-right font-bold text-gray-900">${this.formatCurrency(sale.total)}</td>
+                <td class="p-4 align-top text-center">
+                    <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">Payé (${sale.paymentMethod})</span>
                 </td>
             `;
             tbody.appendChild(tr);
         });
+    },
+
+    // CASH REGISTER VIEW
+    loadCaisseView() {
+        const container = document.getElementById('view-caisse');
+        if (!container) return;
+
+        const cashRegister = StorageHelper.getCashRegister();
+        const isOpen = cashRegister && cashRegister.status === 'open';
+
+        container.innerHTML = `
+            <div class="p-6 lg:p-8 space-y-6 pb-24 lg:pb-8">
+                <!-- Status Banner -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border ${isOpen ? 'border-green-200' : 'border-gray-200'}">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-xl ${isOpen ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'} flex items-center justify-center">
+                                <span class="material-symbols-outlined text-3xl">${isOpen ? 'point_of_sale' : 'lock'}</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold ${isOpen ? 'text-green-700' : 'text-gray-700'}">${isOpen ? 'Caisse Ouverte' : 'Caisse Fermée'}</h3>
+                                <p class="text-sm text-gray-500">${isOpen ? 'Ouverte le ' + new Date(cashRegister.openedAt).toLocaleString('fr-FR') + ' par ' + cashRegister.openedByName : 'Ouvrez la caisse pour commencer'}</p>
+                            </div>
+                        </div>
+                        ${isOpen ? `
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Montant actuel</p>
+                                <p class="text-2xl font-bold text-gray-900">${this.formatCurrency(cashRegister.currentAmount)}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                ${!isOpen ? `
+                    <!-- Open Cash Register Form -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Ouvrir la Caisse</h3>
+                        <form onsubmit="VendeuseApp.openCaisse(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Montant initial</label>
+                                <input type="number" id="caisse-initial-amount" min="0" step="100" required
+                                    class="w-full rounded-xl border-gray-300 border px-4 py-3 text-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Ex: 50000">
+                            </div>
+                            <button type="submit" 
+                                class="w-full py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">lock_open</span>
+                                Ouvrir la Caisse
+                            </button>
+                        </form>
+                    </div>
+                ` : `
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                            <p class="text-xs font-medium text-gray-500 uppercase">Montant Initial</p>
+                            <p class="text-xl font-bold text-gray-900 mt-1">${this.formatCurrency(cashRegister.initialAmount)}</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                            <p class="text-xs font-medium text-gray-500 uppercase">Ventes du Jour</p>
+                            <p class="text-xl font-bold text-green-600 mt-1">+${this.formatCurrency(cashRegister.salesTotal)}</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                            <p class="text-xs font-medium text-gray-500 uppercase">Sorties</p>
+                            <p class="text-xl font-bold text-red-600 mt-1">-${this.formatCurrency(cashRegister.withdrawals.reduce((sum, w) => sum + w.amount, 0))}</p>
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal Form -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Sortie de Caisse</h3>
+                        <form onsubmit="VendeuseApp.addWithdrawal(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Montant</label>
+                                <input type="number" id="withdrawal-amount" min="1" required
+                                    class="w-full rounded-lg border-gray-300 border px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Montant">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Motif *</label>
+                                <input type="text" id="withdrawal-reason" required
+                                    class="w-full rounded-lg border-gray-300 border px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Raison de la sortie">
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" 
+                                    class="w-full py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-lg">remove_circle</span>
+                                    Retirer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Withdrawals List -->
+                    ${cashRegister.withdrawals.length > 0 ? `
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="p-4 bg-gray-50 border-b border-gray-100">
+                                <h3 class="font-bold text-gray-800">Sorties de Caisse</h3>
+                            </div>
+                            <div class="divide-y divide-gray-100">
+                                ${cashRegister.withdrawals.map(w => `
+                                    <div class="p-4 flex items-center justify-between">
+                                        <div>
+                                            <p class="font-medium text-gray-900">${w.reason}</p>
+                                            <p class="text-xs text-gray-500">${new Date(w.date).toLocaleTimeString('fr-FR')} • ${w.userName}</p>
+                                        </div>
+                                        <span class="font-bold text-red-600">-${this.formatCurrency(w.amount)}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Close Cash Register -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-orange-200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Fermer la Caisse</h3>
+                        <form onsubmit="VendeuseApp.closeCaisse(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Montant final en caisse</label>
+                                <input type="number" id="caisse-final-amount" min="0" step="100" required
+                                    class="w-full rounded-xl border-gray-300 border px-4 py-3 text-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Comptez l'argent en caisse">
+                            </div>
+                            <button type="submit" 
+                                class="w-full py-3 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">lock</span>
+                                Fermer la Caisse
+                            </button>
+                        </form>
+                    </div>
+                `}
+                
+                <!-- Full History Section -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-8">
+                    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="font-bold text-gray-900 text-lg">Historique des Opérations</h3>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">Récent</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+                                <tr>
+                                    <th class="p-4">Date</th>
+                                    <th class="p-4">Type</th>
+                                    <th class="p-4">Détails</th>
+                                    <th class="p-4 text-right">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-sm">
+                                ${StorageHelper.getCashHistory().slice().reverse().slice(0, 50).map(entry => {
+            let typeLabel = entry.type;
+            let color = 'gray';
+            if (entry.type === 'OPEN') { typeLabel = 'Ouverture'; color = 'green'; }
+            else if (entry.type === 'CLOSE') { typeLabel = 'Fermeture'; color = 'red'; }
+            else if (entry.type === 'WITHDRAWAL') { typeLabel = 'Retrait'; color = 'orange'; }
+
+            return `
+                                    <tr class="hover:bg-gray-50/50">
+                                        <td class="p-4">
+                                            <div class="font-medium text-gray-900">${new Date(entry.date).toLocaleDateString()}</div>
+                                            <div class="text-xs text-gray-400">${new Date(entry.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span class="px-2 py-1 rounded text-xs font-bold bg-${color}-100 text-${color}-700 uppercase">${typeLabel}</span>
+                                        </td>
+                                        <td class="p-4 text-gray-600">
+                                            ${entry.reason || (entry.type === 'CLOSE' ? `Écart: ${this.formatCurrency(entry.difference || 0)}` : '-')}
+                                        </td>
+                                        <td class="p-4 text-right font-bold text-gray-900">${this.formatCurrency(entry.amount)}</td>
+                                    </tr>
+                                    `;
+        }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    openCaisse(event) {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('caisse-initial-amount').value);
+        if (amount < 0) {
+            alert('Le montant doit être positif');
+            return;
+        }
+        StorageHelper.openCashRegister(amount, this.currentUser.id, this.currentUser.name);
+        alert('Caisse ouverte avec succès !');
+        this.loadCaisseView();
+    },
+
+    addWithdrawal(event) {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('withdrawal-amount').value);
+        const reason = document.getElementById('withdrawal-reason').value.trim();
+
+        if (!reason) {
+            alert('Le motif est obligatoire');
+            return;
+        }
+
+        const result = StorageHelper.addCashWithdrawal(amount, reason, this.currentUser.id, this.currentUser.name);
+        if (result.success) {
+            alert('Sortie de caisse enregistrée');
+            this.loadCaisseView();
+        } else {
+            alert(result.message);
+        }
+    },
+
+    closeCaisse(event) {
+        event.preventDefault();
+        const finalAmount = parseFloat(document.getElementById('caisse-final-amount').value);
+
+        if (!confirm('Êtes-vous sûr de vouloir fermer la caisse ?')) return;
+
+        const result = StorageHelper.closeCashRegister(finalAmount, this.currentUser.id, this.currentUser.name);
+        if (result.success) {
+            const diff = result.cashRegister.difference;
+            const diffText = diff === 0 ? 'Aucun écart' : (diff > 0 ? `Excédent de ${this.formatCurrency(diff)}` : `Manque de ${this.formatCurrency(Math.abs(diff))}`);
+            alert(`Caisse fermée avec succès !\n\nMontant attendu: ${this.formatCurrency(result.cashRegister.expectedAmount)}\nMontant réel: ${this.formatCurrency(finalAmount)}\n${diffText}`);
+            this.loadCaisseView();
+        } else {
+            alert(result.message);
+        }
+    },
+
+    // CLIENTS VIEW
+    loadClientsView() {
+        const container = document.getElementById('view-clients');
+        if (!container) return;
+
+        const clients = StorageHelper.getClients();
+
+        container.innerHTML = `
+            <div class="p-6 lg:p-8 space-y-6 pb-24 lg:pb-8">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="relative flex-1 max-w-md">
+                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400">search</span>
+                        <input type="text" id="client-search" placeholder="Rechercher un client..."
+                            oninput="VendeuseApp.filterClients(this.value)"
+                            class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <button onclick="VendeuseApp.openNewClientModal()" 
+                        class="flex items-center px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-primary/30">
+                        <span class="material-symbols-outlined mr-2">person_add</span>
+                        Nouveau Client
+                    </button>
+                </div>
+
+                <!-- Clients List -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="divide-y divide-gray-100" id="clients-list">
+                        ${clients.length === 0 ? `
+                            <div class="p-8 text-center text-gray-400">
+                                <span class="material-symbols-outlined text-5xl mb-2">group</span>
+                                <p>Aucun client enregistré</p>
+                            </div>
+                        ` : clients.map(client => `
+                            <div class="p-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-full ${client.type === 'VIP' ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-500'} flex items-center justify-center font-bold">
+                                        ${client.firstName ? client.firstName.charAt(0) : ''}${client.lastName ? client.lastName.charAt(0) : ''}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900">${client.firstName} ${client.lastName}</p>
+                                        <p class="text-sm text-gray-500">${client.phone || 'Pas de téléphone'}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="text-right hidden md:block">
+                                        <p class="text-sm font-medium text-gray-900">${this.formatCurrency(client.totalSpent || 0)}</p>
+                                        <span class="text-xs px-2 py-0.5 rounded-full ${client.type === 'VIP' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'}">${client.type || 'Regular'}</span>
+                                    </div>
+                                    <button onclick="VendeuseApp.viewClientDetails('${client.id}')" 
+                                        class="p-2 text-gray-400 hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    filterClients(term) {
+        const clients = StorageHelper.getClients();
+        const filtered = clients.filter(c =>
+            (c.firstName + ' ' + c.lastName).toLowerCase().includes(term.toLowerCase()) ||
+            (c.phone && c.phone.includes(term))
+        );
+
+        const container = document.getElementById('clients-list');
+        if (!container) return;
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center text-gray-400">Aucun client trouvé</div>`;
+        } else {
+            container.innerHTML = filtered.map(client => `
+                <div class="p-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full ${client.type === 'VIP' ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-500'} flex items-center justify-center font-bold">
+                            ${client.firstName ? client.firstName.charAt(0) : ''}${client.lastName ? client.lastName.charAt(0) : ''}
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">${client.firstName} ${client.lastName}</p>
+                            <p class="text-sm text-gray-500">${client.phone || 'Pas de téléphone'}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right hidden md:block">
+                            <p class="text-sm font-medium text-gray-900">${this.formatCurrency(client.totalSpent || 0)}</p>
+                            <span class="text-xs px-2 py-0.5 rounded-full ${client.type === 'VIP' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'}">${client.type || 'Regular'}</span>
+                        </div>
+                        <button onclick="VendeuseApp.viewClientDetails('${client.id}')" 
+                            class="p-2 text-gray-400 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    },
+
+    openNewClientModal() {
+        document.getElementById('new-client-firstname').value = '';
+        document.getElementById('new-client-lastname').value = '';
+        document.getElementById('new-client-whatsapp').value = '';
+        document.getElementById('new-client-modal').classList.remove('hidden');
+    },
+
+    saveNewClient(event) {
+        event.preventDefault();
+        const firstname = document.getElementById('new-client-firstname').value.trim();
+        const lastname = document.getElementById('new-client-lastname').value.trim();
+        const whatsapp = document.getElementById('new-client-whatsapp').value.trim();
+
+        if (!firstname || !lastname || !whatsapp) {
+            alert('Veuillez remplir tous les champs');
+            return;
+        }
+
+        const newClient = {
+            id: 'CLIENT_' + Date.now(),
+            firstName: firstname,
+            lastName: lastname,
+            name: `${firstname} ${lastname}`, // Helper for search
+            phone: whatsapp,
+            whatsapp: whatsapp,
+            type: 'Client',
+            createdBy: this.currentUser.id,
+            createdAt: new Date().toISOString(),
+            totalSpent: 0,
+            purchaseCount: 0
+        };
+
+        StorageHelper.addClient(newClient);
+
+        document.getElementById('new-client-modal').classList.add('hidden');
+        alert('Client créé avec succès !');
+
+        // Refresh view if on clients view
+        if (!document.getElementById('view-clients').classList.contains('hidden')) {
+            this.loadClientsView();
+        }
+    },
+
+    async viewClientDetails(clientId) {
+        const clients = StorageHelper.getClients();
+        const client = clients.find(c => c.id === clientId);
+        if (!client) return;
+
+        // Fetch sales for this client
+        const allSales = await StorageHelper.getSales();
+        const clientSales = allSales.filter(s => s.clientId === clientId || s.clienteId === clientId);
+
+        // Calculate stats
+        const totalSpent = clientSales.reduce((sum, s) => sum + s.total, 0);
+        const count = clientSales.length;
+
+        // Update UI
+        document.getElementById('detail-client-name').textContent = `${client.firstName} ${client.lastName}`;
+        document.getElementById('detail-client-phone').textContent = client.phone || client.whatsapp;
+        document.getElementById('detail-client-total').textContent = this.formatCurrency(totalSpent);
+        document.getElementById('detail-client-count').textContent = count;
+
+        const historyContainer = document.getElementById('detail-client-history');
+        if (clientSales.length === 0) {
+            historyContainer.innerHTML = '<div class="p-4 text-center text-gray-400">Aucun achat historique</div>';
+        } else {
+            historyContainer.innerHTML = clientSales.slice().reverse().map(sale => `
+                <div class="p-4 hover:bg-white transition-colors">
+                    <div class="flex justify-between items-start mb-1">
+                        <div>
+                            <p class="font-bold text-gray-900 text-sm">${new Date(sale.date).toLocaleDateString()} at ${new Date(sale.date).toLocaleTimeString()}</p>
+                            <p class="text-xs text-gray-500">${sale.items.length} articles</p>
+                        </div>
+                        <span class="font-bold text-gray-900">${this.formatCurrency(sale.total)}</span>
+                    </div>
+                    <div class="text-xs text-gray-500 line-clamp-2">
+                        ${sale.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('client-details-modal').classList.remove('hidden');
     }
 };
 
@@ -241,6 +673,13 @@ const POS = {
     },
 
     addToCart(product) {
+        // Variant Handling
+        if (product.variants && product.variants.length > 0) {
+            this.openVariantModal(product);
+            return;
+        }
+
+        // Legacy/Simple Product Handling
         const existing = this.cart.find(item => item.id === product.id);
 
         if (existing) {
@@ -251,9 +690,67 @@ const POS = {
                 return;
             }
         } else {
-            this.cart.push({ ...product, quantity: 1 });
+            this.cart.push({ ...product, quantity: 1, isVariant: false });
         }
 
+        this.renderCart();
+    },
+
+    openVariantModal(product) {
+        const modal = document.getElementById('variant-modal');
+        const container = document.getElementById('variant-options-container');
+        document.getElementById('variant-modal-title').textContent = product.name;
+
+        container.innerHTML = product.variants.map(v => {
+            const isOut = v.stock <= 0;
+            return `
+            <button onclick="${isOut ? '' : `POS.addVariantToCart('${product.id}', '${v.id}')`}" 
+                class="w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between items-center ${isOut ? 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed' : 'border-gray-100 hover:border-primary hover:bg-blue-50 bg-white'}"
+            >
+                <div>
+                    <span class="font-bold text-gray-900">${v.size}</span>
+                    <span class="text-gray-500 mx-2">•</span>
+                    <span class="text-gray-700">${v.color}</span>
+                </div>
+                <div class="text-xs font-bold ${isOut ? 'text-red-500' : 'text-green-600 bg-green-100 px-2 py-1 rounded'}">
+                    ${isOut ? 'Rupture' : `Stock: ${v.stock}`}
+                </div>
+            </button>
+            `;
+        }).join('');
+
+        modal.classList.remove('hidden');
+    },
+
+    addVariantToCart(productId, variantId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+        const variant = product.variants.find(v => v.id === variantId);
+        if (!variant) return;
+
+        // Check stock
+        const existing = this.cart.find(item => item.id === product.id && item.variantId === variantId);
+
+        if (existing) {
+            if (existing.quantity < variant.stock) {
+                existing.quantity++;
+            } else {
+                alert('Stock variant insuffisant !');
+                return;
+            }
+        } else {
+            this.cart.push({
+                ...product,
+                variantId: variant.id,
+                variantName: `${variant.size} - ${variant.color}`,
+                price: product.price, // Variants share price for now
+                quantity: 1,
+                maxStock: variant.stock,
+                isVariant: true
+            });
+        }
+
+        document.getElementById('variant-modal').classList.add('hidden');
         this.renderCart();
     },
 
@@ -265,10 +762,11 @@ const POS = {
     updateQuantity(index, delta) {
         const item = this.cart[index];
         const newQty = item.quantity + delta;
+        const limit = item.isVariant ? item.maxStock : item.stock;
 
         if (newQty <= 0) {
             this.removeFromCart(index);
-        } else if (newQty > item.stock) {
+        } else if (newQty > limit) {
             alert('Stock maximum atteint');
         } else {
             item.quantity = newQty;
@@ -285,7 +783,6 @@ const POS = {
 
     setPaymentMethod(method) {
         this.paymentMethod = method;
-        // Visual
         ['cash', 'card', 'mobile'].forEach(m => {
             const btn = document.getElementById(`pm-${m}`);
             if (m === method) {
@@ -312,10 +809,13 @@ const POS = {
             this.cart.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'flex items-center gap-3 animate-slide-in-right';
+                // Display variant info if exists
+                const badge = item.isVariant ? `<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded ml-1">${item.variantName}</span>` : '';
+
                 row.innerHTML = `
                     <img src="${item.image}" class="w-12 h-12 rounded-lg object-cover border border-gray-200">
                     <div class="flex-1 min-w-0">
-                        <h5 class="text-sm font-bold text-gray-900 line-clamp-1">${item.name}</h5>
+                        <h5 class="text-sm font-bold text-gray-900 line-clamp-1">${item.name} ${badge}</h5>
                         <p class="text-xs text-gray-500">${VendeuseApp.formatCurrency(item.price)} / unit</p>
                     </div>
                     <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
@@ -325,6 +825,7 @@ const POS = {
                     </div>
                     <div class="text-right min-w-[60px]">
                         <div class="text-sm font-bold text-gray-900">${VendeuseApp.formatCurrency(item.price * item.quantity)}</div>
+                        <div class="text-[10px] text-gray-400">Total</div>
                     </div>
                 `;
                 container.appendChild(row);
@@ -336,8 +837,7 @@ const POS = {
 
     updateTotals() {
         const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        // Using XAF rules (usually inclusive or added? User requests XAF. Let's stick to simple sum for now but display tax line).
-        const taxRate = 0.08;
+        const taxRate = 0; // Simple for now
         const tax = subtotal * taxRate;
         const total = subtotal + tax;
 
@@ -354,7 +854,6 @@ const POS = {
         this.currentClient = client;
         document.getElementById('client-modal').classList.add('hidden');
 
-        // Update Cart Header
         const container = document.getElementById('client-selector');
         container.innerHTML = `
             <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -372,83 +871,104 @@ const POS = {
 
     async processSale() {
         if (this.cart.length === 0) {
-            alert('Le panier est vide.');
+            alert('Le panier est vide');
             return;
         }
 
-        const btn = document.querySelector('button[onclick="POS.processSale()"]');
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> TRAITEMENT...';
+        const total = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-        // Prepare data
-        const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const tax = subtotal * 0.08;
-        const total = subtotal + tax;
+        // Stock Check & Deduction
+        const products = StorageHelper.getProducts();
+        let stockIssue = false;
 
-        const saleData = {
+        const saleItems = this.cart.map(item => {
+            const product = products.find(p => p.id === item.id);
+            if (!product) {
+                stockIssue = true;
+                return;
+            }
+
+            if (item.isVariant) {
+                const variant = product.variants.find(v => v.id === item.variantId);
+                if (!variant || variant.stock < item.quantity) {
+                    stockIssue = true;
+                } else {
+                    variant.stock -= item.quantity;
+                    // Also decrement total stock for easy viewing
+                    product.stock = (product.stock || 0) - item.quantity;
+                }
+            } else {
+                if (product.stock < item.quantity) {
+                    stockIssue = true;
+                } else {
+                    product.stock -= item.quantity;
+                }
+            }
+            StorageHelper.updateProduct(product);
+
+            return {
+                id: item.id,
+                name: item.name + (item.variantName ? ` (${item.variantName})` : ''),
+                quantity: item.quantity,
+                price: item.price,
+                total: item.price * item.quantity,
+                variantId: item.variantId || null
+            };
+        });
+
+        if (stockIssue) {
+            alert("Erreur de stock lors de la finalisation. Veuillez rafraîchir.");
+            return;
+        }
+
+        const sale = {
             id: 'SALE_' + Date.now(),
             date: new Date().toISOString(),
-            vendeuseId: VendeuseApp.currentUser.id,
-            vendeuseName: VendeuseApp.currentUser.name,
-            clienteId: this.currentClient ? this.currentClient.id : null,
-            clienteName: this.currentClient ? this.currentClient.name : 'Client invité',
-            clientName: this.currentClient ? this.currentClient.name : 'Client invité', // Duplicate for compatibility
-            items: this.cart.map(i => ({
-                id: i.id,
-                name: i.name,
-                quantity: i.quantity,
-                price: i.price,
-                total: i.price * i.quantity
-            })),
-            subtotal,
-            tax,
-            discount: 0,
-            total,
+            items: saleItems,
+            total: total,
             paymentMethod: this.paymentMethod,
-            status: 'completed'
+            vendeuseId: this.currentUser.id,
+            vendeuseName: this.currentUser.name,
+            clientId: this.currentClient ? this.currentClient.id : null,
+            clientName: this.currentClient ? this.currentClient.name : 'Client invité'
         };
 
-        // Save
-        const success = await StorageHelper.addSale(saleData);
+        const success = await StorageHelper.addSale(sale);
 
         if (success) {
-            // Simulate processing time
-            setTimeout(() => {
-                alert(`Vente enregistrée avec succès !\nMontant: ${VendeuseApp.formatCurrency(total)}`);
-                this.cart = [];
-                this.renderCart();
-                this.currentClient = null;
-                // Reset Client Selector
-                const clientSelector = document.getElementById('client-selector');
-                if (clientSelector) {
-                    clientSelector.innerHTML = `
-                             <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                 <span class="material-symbols-outlined">person</span>
-                             </div>
-                             <div class="flex-1">
-                                 <button onclick="POS.openClientModal()" class="text-sm font-medium text-primary hover:underline flex items-center">
-                                     Sélectionner Client <span class="material-symbols-outlined text-sm ml-1">arrow_drop_down</span>
-                                 </button>
-                                 <p class="text-xs text-gray-400">Client invité</p>
-                             </div>
-                             <button class="p-2 hover:bg-gray-200 rounded-full transition-colors" onclick="POS.openClientModal()">
-                                 <span class="material-symbols-outlined text-gray-500">person_add</span>
-                             </button>
-                    `;
+            // Update cash register
+            const cashReg = StorageHelper.getCashRegister();
+            if (cashReg && cashReg.status === 'open') {
+                cashReg.salesTotal += total;
+                cashReg.currentAmount += total;
+                StorageHelper.updateCashRegister(cashReg);
+            }
+
+            // Update client stats if exists
+            if (this.currentClient && this.currentClient.id) {
+                const client = StorageHelper.getClients().find(c => c.id === this.currentClient.id);
+                if (client) {
+                    client.totalSpent = (client.totalSpent || 0) + total;
+                    client.purchaseCount = (client.purchaseCount || 0) + 1;
+                    client.lastVisit = new Date().toISOString();
+                    StorageHelper.updateClient(client);
                 }
+            }
 
-                btn.disabled = false;
-                btn.innerHTML = originalText;
+            // Success UI
+            alert('Vente réussie !');
+            this.cart = [];
+            this.currentClient = null;
+            this.selectClient({ name: 'Client invité', id: null });
+            this.renderCart();
+            // Re-fetch products to get updated stock
+            this.products = StorageHelper.getProducts();
+            this.renderProducts();
 
-                // Refresh dashboard view
-                VendeuseApp.loadDashboardData();
-
-            }, 1000);
+            // Refresh history
+            VendeuseApp.loadHistory();
         } else {
-            alert('Erreur lors de l\'enregistrement');
-            btn.disabled = false;
-            btn.innerHTML = originalText;
+            alert('Erreur lors de l\'enregistrement de la vente');
         }
     }
 };

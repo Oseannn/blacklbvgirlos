@@ -57,7 +57,7 @@ const AdminApp = {
         });
 
         // Hide all views
-        ['dashboard', 'users', 'reports', 'clients', 'settings'].forEach(v => {
+        ['dashboard', 'users', 'reports', 'caisse', 'clients', 'settings'].forEach(v => {
             const el = document.getElementById(`view-${v}`);
             if (el) el.classList.add('hidden');
         });
@@ -74,6 +74,7 @@ const AdminApp = {
             dashboard: "Vue d'ensemble",
             users: "Gestion des Utilisateurs",
             reports: "Rapports & Statistiques",
+            caisse: "Supervision Caisse",
             clients: "Top Clients",
             settings: "Paramètres"
         };
@@ -85,6 +86,8 @@ const AdminApp = {
         // Refresh Data on View Switch
         if (viewId === 'reports') {
             this.loadReports('month');
+        } else if (viewId === 'caisse') {
+            this.loadCaisseGlobalView();
         } else if (viewId === 'clients') {
             this.loadTopClients();
         } else if (viewId === 'settings') {
@@ -450,21 +453,32 @@ const AdminApp = {
 
                 sortedSales.forEach(sale => {
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-gray-50/50 transition-colors';
+                    tr.className = 'hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0';
+
+                    // Format items tooltip or list
+                    const itemsSummary = sale.items ? sale.items.map(i => `${i.quantity}x ${i.name}`).join(', ') : 'Articles inconnus';
+                    const itemsDetail = sale.items ? sale.items.map(i => `<div class="flex justify-between text-xs text-gray-500"><span class="truncate pr-2">${i.quantity}x ${i.name}</span><span>${this.formatCurrency(i.price * i.quantity)}</span></div>`).join('') : '';
+
                     tr.innerHTML = `
-                        <td class="px-6 py-4 text-gray-500">
+                        <td class="px-6 py-4 align-top text-gray-500">
                             ${new Date(sale.date).toLocaleDateString()} 
-                            <span class="text-xs text-gray-400 ml-1">${new Date(sale.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            <div class="text-xs text-gray-400">${new Date(sale.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         </td>
-                        <td class="px-6 py-4 font-medium text-gray-900">
-                            ${sale.clienteName || sale.clientName || 'Client de passage'}
+                        <td class="px-6 py-4 align-top">
+                            <div class="font-medium text-gray-900">${sale.clienteName || sale.clientName || 'Client de passage'}</div>
+                            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-primary hover:underline mt-1 text-left flex items-center">
+                                Voir ${sale.items ? sale.items.length : 0} articles <span class="material-symbols-outlined text-[10px] ml-1">expand_more</span>
+                            </button>
+                            <div class="hidden mt-2 p-2 bg-gray-50 rounded-lg space-y-1">
+                                ${itemsDetail}
+                            </div>
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 align-top">
                             <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800">
-                                ${sale.method === 'cash' ? 'Espèces' : sale.method === 'card' ? 'Carte' : 'Mobile'}
+                                ${(sale.paymentMethod || sale.method) === 'cash' ? 'Espèces' : (sale.paymentMethod || sale.method) === 'card' ? 'Carte' : 'Mobile'}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right font-bold text-gray-900">
+                        <td class="px-6 py-4 align-top text-right font-bold text-gray-900">
                             ${this.formatCurrency(sale.total)}
                         </td>
                     `;
@@ -611,20 +625,22 @@ const AdminApp = {
 
     filterSalesByPeriod(sales, period) {
         const now = new Date();
+        const today = new Date(now);
         return sales.filter(s => {
             const d = new Date(s.date);
             if (period === 'day') {
-                return d.toDateString() === now.toDateString();
+                return d.toDateString() === today.toDateString();
             } else if (period === 'week') {
-                const day = now.getDay();
-                const diff = now.getDate() - day + (day == 0 ? -6 : 1);
-                const startOfWeek = new Date(now.setDate(diff));
+                const day = today.getDay();
+                const diff = today.getDate() - day + (day == 0 ? -6 : 1);
+                const startOfWeek = new Date(today);
+                startOfWeek.setDate(diff);
                 startOfWeek.setHours(0, 0, 0, 0);
                 return d >= startOfWeek;
             } else if (period === 'month') {
-                return d.getMonth() === new Date().getMonth() && d.getFullYear() === new Date().getFullYear();
+                return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
             } else if (period === 'year') {
-                return d.getFullYear() === new Date().getFullYear();
+                return d.getFullYear() === today.getFullYear();
             }
             return true;
         });
@@ -966,12 +982,37 @@ const AdminApp = {
         downloadAnchorNode.remove();
     },
 
-    initChart() {
+    async initChart() {
         const ctx = document.getElementById('salesChart');
         if (!ctx) return;
 
-        const labels = Array.from({ length: 10 }, (_, i) => `J-${10 - i}`);
-        const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 5000) + 1000);
+        // Get real sales data for the last 30 days
+        const sales = await StorageHelper.getSales();
+        const today = new Date();
+        const labels = [];
+        const data = [];
+
+        // Generate last 30 days labels and aggregate sales
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            const dateStr = date.toDateString();
+
+            // Format label as day/month
+            const dayLabel = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+            labels.push(dayLabel);
+
+            // Sum sales for this day
+            const dayTotal = sales
+                .filter(s => new Date(s.date).toDateString() === dateStr)
+                .reduce((sum, s) => sum + (s.total || 0), 0);
+            data.push(dayTotal);
+        }
+
+        // Destroy existing chart if any
+        if (this.chartInstance) {
+            this.chartInstance.destroy();
+        }
 
         this.chartInstance = new Chart(ctx, {
             type: 'line',
@@ -988,7 +1029,7 @@ const AdminApp = {
                     pointBackgroundColor: '#ffffff',
                     pointBorderColor: '#137fec',
                     pointBorderWidth: 2,
-                    pointRadius: 4,
+                    pointRadius: 3,
                     pointHoverRadius: 6
                 }]
             },
@@ -1019,11 +1060,79 @@ const AdminApp = {
                     },
                     x: {
                         grid: { display: false },
-                        ticks: { font: { family: 'Inter', size: 11 }, color: '#94a3b8' },
+                        ticks: {
+                            font: { family: 'Inter', size: 10 },
+                            color: '#94a3b8',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
                         border: { display: false }
                     }
                 }
             }
+        });
+    },
+
+    loadCaisseGlobalView() {
+        const history = StorageHelper.getCashHistory();
+        const tbody = document.getElementById('caisse-table-body');
+        if (!tbody) return;
+
+        tbody.innerHTML = '';
+        // Sort by date desc
+        history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        history.forEach(entry => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0';
+
+            // Define badge for action type
+            let badgeClass = 'bg-gray-100 text-gray-800';
+            let actionText = entry.type;
+            let icon = 'info';
+
+            if (entry.type === 'OPEN') {
+                badgeClass = 'bg-green-100 text-green-800';
+                actionText = 'OUVERTURE';
+                icon = 'lock_open';
+            } else if (entry.type === 'CLOSE') {
+                badgeClass = 'bg-red-100 text-red-800';
+                actionText = 'FERMETURE';
+                icon = 'lock';
+            } else if (entry.type === 'WITHDRAWAL') {
+                badgeClass = 'bg-orange-100 text-orange-800';
+                actionText = 'RETRAIT';
+                icon = 'payments';
+            }
+
+            // Reason or Diff
+            let details = entry.reason || '-';
+            if (entry.type === 'CLOSE') {
+                const diff = (entry.difference || 0);
+                const diffClass = diff < 0 ? 'text-red-500 font-bold' : (diff > 0 ? 'text-green-500 font-bold' : 'text-gray-500');
+                details = `Écart: <span class="${diffClass}">${this.formatCurrency(diff)}</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-6 py-4 text-gray-500 text-xs">
+                    ${new Date(entry.date).toLocaleString('fr-FR')}
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    ${entry.userName || 'Unknown'}
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${badgeClass}">
+                        <span class="material-symbols-outlined text-[14px] mr-1">${icon}</span> ${actionText}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-xs text-gray-600">
+                    ${details}
+                </td>
+                <td class="px-6 py-4 text-right font-bold text-gray-900">
+                    ${this.formatCurrency(entry.amount)}
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 };

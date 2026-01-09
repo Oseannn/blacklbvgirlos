@@ -46,6 +46,7 @@ const Auth = {
         if (user && user.role !== role) {
             // Redirect to correct dashboard based on role
             if (user.role === 'admin') window.location.href = 'admin_dashboard.html';
+            else if (user.role === 'manager') window.location.href = 'manager_dashboard.html';
             else if (user.role === 'vendeuse') window.location.href = 'vendeuse_dashboard.html';
             return false;
         }
