@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Black LBV Girl</title>
+    <title>Dashboard Admin - RetailOS</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +51,7 @@
             <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white mr-3">
                 <span class="material-symbols-outlined text-xl">storefront</span>
             </div>
-            <h1 class="text-xl font-bold tracking-tight">Black LBV Girl</h1>
+            <h1 class="text-xl font-bold tracking-tight">RetailOS</h1>
         </div>
 
         <!-- Nav -->
@@ -73,6 +73,12 @@
                 id="nav-reports">
                 <span class="material-symbols-outlined mr-3 text-xl">bar_chart</span>
                 Rapports
+            </button>
+            <button onclick="AdminApp.switchView('caisse')"
+                class="nav-item w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                id="nav-caisse">
+                <span class="material-symbols-outlined mr-3 text-xl">account_balance_wallet</span>
+                Supervision Caisse
             </button>
             <button onclick="AdminApp.switchView('clients')"
                 class="nav-item w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
@@ -183,7 +189,7 @@
                         </div>
                         <h3 class="text-gray-500 text-sm font-medium">Meilleure Vendeuse</h3>
                         <p class="text-2xl font-bold text-gray-900 mt-1" id="kpi-top-seller">-</p>
-                        <p class="text-sm text-gray-400 mt-1" id="kpi-top-seller-amount">- FCFA</p>
+                        <p class="text-sm text-gray-400 mt-1" id="kpi-top-seller-amount">- €</p>
                     </div>
 
                     <!-- KPI 4 -->
@@ -286,6 +292,33 @@
             <!-- VIEW: REPORTS -->
             <div id="view-reports" class="hidden space-y-6 animate-fade-in pb-10">
                 <!-- Content injected by JS -->
+            </div>
+
+            <!-- VIEW: CAISSE -->
+            <div id="view-caisse" class="hidden space-y-6 animate-fade-in pb-10">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900">Sorties de Caisse & Opérations</h3>
+                        <p class="text-sm text-gray-500">Suivi global des opérations de caisse (ouvertures, fermetures,
+                            retraits).</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                    <th class="px-6 py-4 font-semibold">Date/Heure</th>
+                                    <th class="px-6 py-4 font-semibold">Vendeuse</th>
+                                    <th class="px-6 py-4 font-semibold">Action</th>
+                                    <th class="px-6 py-4 font-semibold">Détails</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caisse-table-body" class="divide-y divide-gray-100 text-sm">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- VIEW: CLIENTS -->
@@ -477,7 +510,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
                         <p class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">Total Ventes</p>
-                        <p class="text-2xl font-bold text-gray-900" id="seller-detail-total">0 FCFA</p>
+                        <p class="text-2xl font-bold text-gray-900" id="seller-detail-total">0,00 €</p>
                     </div>
                     <div class="bg-purple-50/50 p-4 rounded-xl border border-purple-100">
                         <p class="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-1">Transactions</p>
@@ -485,7 +518,7 @@
                     </div>
                     <div class="bg-green-50/50 p-4 rounded-xl border border-green-100">
                         <p class="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Panier Moyen</p>
-                        <p class="text-2xl font-bold text-gray-900" id="seller-detail-avg">0 FCFA</p>
+                        <p class="text-2xl font-bold text-gray-900" id="seller-detail-avg">0,00 €</p>
                     </div>
                 </div>
 
@@ -525,9 +558,9 @@
     </style>
 
     <!-- Scripts -->
-    <script src="storage.js"></script>
-    <script src="auth.js"></script>
-    <script src="admin.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Vendeuse - Black LBV Girl</title>
+    <title>Espace Vendeuse - RetailOS</title>
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +68,7 @@
                 class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
                 <span class="material-symbols-outlined text-xl">storefront</span>
             </div>
-            <h1 class="hidden lg:block ml-3 text-lg font-bold tracking-tight">Black LBV Girl</h1>
+            <h1 class="hidden lg:block ml-3 text-lg font-bold tracking-tight">RetailOS</h1>
         </div>
 
         <!-- Nav -->
@@ -93,6 +93,12 @@
                 class="nav-item w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 py-3 text-sm font-medium rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all group relative">
                 <span class="material-symbols-outlined text-2xl">receipt_long</span>
                 <span class="hidden lg:block ml-3">Mes Ventes</span>
+            </button>
+
+            <button onclick="VendeuseApp.switchView('caisse')" id="nav-caisse"
+                class="nav-item w-full flex items-center justify-center lg:justify-start px-2 lg:px-4 py-3 text-sm font-medium rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all group relative">
+                <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+                <span class="hidden lg:block ml-3">Caisse</span>
             </button>
 
             <button onclick="VendeuseApp.switchView('clients')" id="nav-clients"
@@ -172,7 +178,7 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-xs font-medium text-gray-500 uppercase">Ventes du jour</p>
-                                <h4 class="text-2xl font-bold text-gray-900 mt-1" id="dash-sales-today">0 FCFA</h4>
+                                <h4 class="text-2xl font-bold text-gray-900 mt-1" id="dash-sales-today">0 €</h4>
                             </div>
                             <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
                                 <span class="material-symbols-outlined">payments</span>
@@ -196,7 +202,7 @@
                             </div>
                         </div>
                         <div class="mt-4 text-xs text-gray-400">
-                            Panier moyen: <span class="font-medium text-gray-700" id="dash-avg-cart">0 FCFA</span>
+                            Panier moyen: <span class="font-medium text-gray-700" id="dash-avg-cart">0 €</span>
                         </div>
                     </div>
 
@@ -327,15 +333,15 @@
                         <div class="space-y-2 mb-4">
                             <div class="flex justify-between text-sm text-gray-500">
                                 <span>Sous-total</span>
-                                <span id="cart-subtotal">0 FCFA</span>
+                                <span id="cart-subtotal">0.00 €</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-500">
                                 <span>Taxes (0%)</span> <!-- Simplified tax for now -->
-                                <span id="cart-tax">0 FCFA</span>
+                                <span id="cart-tax">0.00 €</span>
                             </div>
                             <div class="flex justify-between items-center pt-2">
                                 <span class="font-bold text-gray-900 text-lg">Total</span>
-                                <span class="font-bold text-primary text-2xl" id="cart-total">0 FCFA</span>
+                                <span class="font-bold text-primary text-2xl" id="cart-total">0.00 €</span>
                             </div>
                         </div>
 
@@ -388,13 +394,14 @@
                 </div>
             </div>
 
-            <!-- VIEW: CLIENTS (Placeholder) -->
-            <div id="view-clients" class="absolute inset-0 bg-white hidden p-8 flex items-center justify-center">
-                <div class="text-center">
-                    <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">group</span>
-                    <h3 class="text-xl font-bold text-gray-900">Gestion Clients</h3>
-                    <p class="text-gray-500">Module en cours de développement...</p>
-                </div>
+            <!-- VIEW: CLIENTS (Dynamic) -->
+            <div id="view-clients" class="absolute inset-0 bg-bgLight hidden overflow-y-auto">
+                <!-- Content will be populated by JS -->
+            </div>
+
+            <!-- VIEW: CAISSE -->
+            <div id="view-caisse" class="absolute inset-0 bg-bgLight hidden overflow-y-auto">
+                <!-- Content will be populated by JS -->
             </div>
 
         </div>
@@ -431,10 +438,110 @@
         </div>
     </div>
 
+    <!-- Modal: New Client -->
+    <div id="new-client-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl">
+            <h3 class="font-bold text-lg mb-4 text-gray-900">Nouveau Client</h3>
+            <form onsubmit="VendeuseApp.saveNewClient(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+                        <input type="text" id="new-client-firstname" required
+                            class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                        <input type="text" id="new-client-lastname" required
+                            class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Numéro WhatsApp</label>
+                    <input type="tel" id="new-client-whatsapp" required placeholder="+241 ..."
+                        class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 outline-none">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="document.getElementById('new-client-modal').classList.add('hidden')"
+                        class="flex-1 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200">Annuler</button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-primary text-white font-bold rounded-xl hover:bg-blue-600 shadow-lg shadow-primary/30">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Client Details -->
+    <div id="client-details-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h3 class="font-bold text-xl text-gray-900" id="detail-client-name">--</h3>
+                    <p class="text-sm text-gray-500" id="detail-client-phone">--</p>
+                </div>
+                <button onclick="document.getElementById('client-details-modal').classList.add('hidden')"
+                    class="p-2 hover:bg-gray-100 rounded-full text-gray-500">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <p class="text-xs text-blue-600 uppercase font-bold mb-1">Total Dépensé</p>
+                    <p class="text-2xl font-bold text-blue-900" id="detail-client-total">0 CFA</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                    <p class="text-xs text-purple-600 uppercase font-bold mb-1">Nombre d'Achats</p>
+                    <p class="text-2xl font-bold text-purple-900" id="detail-client-count">0</p>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-sm text-gray-900 mb-3 uppercase tracking-wider">Historique d'Achats</h4>
+            <div class="max-h-60 overflow-y-auto border border-gray-100 rounded-xl bg-gray-50">
+                <div id="detail-client-history" class="divide-y divide-gray-100">
+                    <!-- History items -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Variant Selection -->
+    <div id="variant-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl transition-all transform scale-100">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="font-bold text-lg text-gray-900" id="variant-modal-title">Choisir une variante</h3>
+                    <p class="text-xs text-gray-500" id="variant-modal-subtitle">Sélectionnez la taille et la couleur
+                    </p>
+                </div>
+                <button onclick="document.getElementById('variant-modal').classList.add('hidden')"
+                    class="text-gray-400 hover:text-gray-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div id="variant-options-container" class="grid grid-cols-1 gap-3 max-h-[60vh] overflow-y-auto mb-4">
+                <!-- Populated by JS -->
+            </div>
+
+            <button onclick="document.getElementById('variant-modal').classList.add('hidden')"
+                class="w-full py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200">Annuler</button>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script src="storage.js"></script>
-    <script src="auth.js"></script>
-    <script src="vendeuse.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/vendeuse.js"></script>
+    <script>
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... existing init code ...
+            if (window.VendeuseApp) VendeuseApp.init();
+        });
+    </script>
 </body>
 
 </html>
